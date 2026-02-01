@@ -25,3 +25,6 @@ Should have the ff:
 - CRUDL for students, program and college
 - sort
  - search by fields
+
+ ## my todo list
+ design data schema lmao I ONLY KNOW JSON AAHHHH
