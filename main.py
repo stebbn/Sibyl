@@ -4,6 +4,7 @@ import darkdetect
 import pywinstyles
 
 from datetime import datetime
+from modules.Data import get_college_by_program
 
 import sys
 import csv
@@ -31,6 +32,18 @@ def onButtonPress():
 
 button = ttk.Button(root, text="dark mode test", command=onButtonPress)
 button.pack()
+
+def read_input():
+    lbl.config(text=f"College: {get_college_by_program(txt.get())}")
+
+txt = ttk.Entry(root)
+txt.pack()
+
+btn = ttk.Button(root, text="find college", command=read_input)
+btn.pack()
+
+lbl = ttk.Label(root, text="")
+lbl.pack()
 
 sv_ttk.set_theme(darkdetect.theme())
 sv_ttk.set_theme("dark")
