@@ -31,5 +31,6 @@ Should have the ff:
  - modulize frames and create a oop returns for the tk frames i will be using.
  - hop on figma to design idk
  - verify all courses
- 
+ - divide data for colleges and courses
+ - settle final features to what the scope of CRUDL the app has
 
