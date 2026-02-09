@@ -1,63 +1,69 @@
-import tkinter
+import tkinter as tk
+from tkinter import ttk
 import sv_ttk
 import darkdetect
 import pywinstyles
-
-from datetime import datetime
-from modules.Data import get_college_by_program
-
 import sys
-import csv
 
-from tkinter import ttk
+from modules.Data import get_college_by_program
+from ui import SidebarFrame
 
-root = tkinter.Tk()
+class SibylApp(tk.Tk):
+    def __init__(self):
+        super().__init__()
 
-window_width = 600
-window_height = 400
+        self.title("Sibyl")
+        self.setup_geometry(800, 500)
 
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
+        self.columnconfigure(1, weight=1)
+        self.rowconfigure(0, weight=1)
 
-center_x = int(screen_width/2 - window_width / 2)
-center_y = int(screen_height/2 - window_height / 2)
+        self.sidebar = SidebarFrame(self, on_nav_click="")
+        self.sidebar.grid(row=0, column=0, sticky="nsew")
 
-root.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+        self.setup_main_content()
 
-def onButtonPress():
-    with open('./data/data.csv', 'a', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=' ')
-        spamwriter.writerow(['gi pindot'] + ['|'] + [datetime.now().strftime("%H:%M:%S")])
-    print("Data written!")
+        # always make last or it wont apply all
+        sv_ttk.set_theme(darkdetect.theme())
+        self.apply_theme_to_titlebar()
 
-button = ttk.Button(root, text="dark mode test", command=onButtonPress)
-button.pack()
+    def setup_geometry(self, width, height):
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        center_x = int(screen_width/2 - width / 2)
+        center_y = int(screen_height/2 - height / 2)
+        self.geometry(f'{width}x{height}+{center_x}+{center_y}')
 
-def read_input():
-    lbl.config(text=f"College: {get_college_by_program(txt.get())}")
+    def setup_main_content(self):
+        self.container = ttk.Frame(self)
+        self.container.grid(row=0, column=1, padx=20, pady=20, sticky="n")
 
-txt = ttk.Entry(root)
-txt.pack()
+        self.txt = ttk.Entry(self.container)
+        self.txt.pack(pady=5)
 
-btn = ttk.Button(root, text="find college", command=read_input)
-btn.pack()
+        self.btn = ttk.Button(self.container, text="Find College", command=self.read_input)
+        self.btn.pack(pady=5)
 
-lbl = ttk.Label(root, text="")
-lbl.pack()
+        self.lbl = ttk.Label(self.container, text="Enter Program Code (e.g., BSCS)")
+        self.lbl.pack(pady=5)
 
-sv_ttk.set_theme(darkdetect.theme())
-sv_ttk.set_theme("dark")
+    def read_input(self):
+        program = self.txt.get()
+        college = get_college_by_program(program)
+        self.lbl.config(text=f"College: {college}")
 
-def apply_theme_to_titlebar(root):
-    version = sys.getwindowsversion()
+    def apply_theme_to_titlebar(self):
+        version = sys.getwindowsversion()
+        is_dark = sv_ttk.get_theme() == "dark"
+        color = "#1c1c1c" if is_dark else "#141313"
 
-    if version.major == 10 and version.build >= 22000:
-        pywinstyles.change_header_color(root, "#1c1c1c" if sv_ttk.get_theme() == "dark" else "#fafafa")
-    elif version.major == 10:
-        pywinstyles.apply_style(root, "dark" if sv_ttk.get_theme() == "dark" else "normal")
+        if version.major == 10 and version.build >= 22000:
+            pywinstyles.change_header_color(self, color)
+        elif version.major == 10:
+            pywinstyles.apply_style(self, "dark" if is_dark else "normal")
+            self.wm_attributes("-alpha", 0.99)
+            self.wm_attributes("-alpha", 1)
 
-        root.wm_attributes("-alpha", 0.99)
-        root.wm_attributes("-alpha", 1)
-
-apply_theme_to_titlebar(root)
-root.mainloop()
+if __name__ == "__main__":
+    app = SibylApp()
+    app.mainloop()

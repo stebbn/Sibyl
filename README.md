@@ -34,3 +34,7 @@ Should have the ff:
  - divide data for colleges and courses
  - settle final features to what the scope of CRUDL the app has
 
+## install list
+import sv_ttk
+import darkdetect
+import pywinstyles
