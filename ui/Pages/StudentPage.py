@@ -1,4 +1,3 @@
-import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
@@ -31,23 +30,35 @@ class InsertTab(ttk.Frame):
 
     def setup_ui(self):
         form_container = ttk.Frame(self)
-        form_container.place(relx=0.5, rely=0.5, anchor="center")
+        form_container.place(relx=0.5, rely=0.51, anchor="center")
 
-        self.fields = ["ID Number", "First Name", "Last Name", "Program Code", "Year Level"]
+        self.fields = ["ID Number", "First Name", "Last Name", "Program Code", "Year Level", "Gender"]
         self.entries = {}
 
         for i, field in enumerate(self.fields):
-            ttk.Label(form_container, text=field + ":").grid(row=i, column=0, padx=10, pady=10, sticky="e")
-            entry = ttk.Entry(form_container, width=30)
-            entry.grid(row=i, column=1, padx=10, pady=10, sticky="w")
-            self.entries[i] = entry
+           if field == "Gender": 
+                continue 
+           
+           ttk.Label(form_container, text=field + ":").grid(row=i, column=0, padx=10, pady=5, sticky="e")
+           entry = ttk.Entry(form_container, width=30)
+           entry.grid(row=i, column=1, padx=10, pady=10, sticky="w")
+           self.entries[i] = entry
+
+        ttk.Label(form_container, text=self.fields[5] + ":").grid(row=i, column=0, padx=10, pady=5, sticky="e")
+        
+        GenderOptions = ["Male", "Female", "Non-Binary"]
+
+        entry = ttk.Combobox(form_container, values=GenderOptions, state="readonly", justify="center")
+        entry.bind("<<ComboboxSelected>>", lambda e: self.focus())
+        entry.grid(row=5, column=1, padx=10, pady=10, sticky="w")
+        self.entries[5] = entry
 
         ttk.Button(
             form_container, 
             text="Save Student Record", 
             style="Accent.TButton",
             command=self.save_data
-        ).grid(row=len(self.fields), column=0, columnspan=2, pady=20)
+        ).grid(row=len(self.fields), column=0, columnspan=2, pady=10)
 
         self.TextLabel = ttk.Label(
             form_container, 
@@ -56,25 +67,27 @@ class InsertTab(ttk.Frame):
         )
         self.TextLabel.grid(row=len(self.fields)+1, column=0, columnspan=2, pady=0)
 
-    def verify_format(): return True
-
     def save_data(self):
+      self.TextLabel.config(text="")
+
       format = data.GetFormat()
       to_pack = {}
 
-      print(self.entries)
-
       for i, data_item in enumerate(format):
-          inputted = self.entries[i]
-          verified = self.verify_format(inputted)
+          inputted = self.entries[i].get().strip()
+          verified, msg = data.VerifyFormat(data_item, inputted, self.fields[i])
+          # msg contains corrected format
 
           if inputted and verified == True:
-            to_pack[i] = inputted
+            to_pack[i] = msg
           elif verified != True:
-              self.TextLabel.config(text=verified)
-              break
+              self.TextLabel.config(text=msg)
+              return
           else: 
               to_pack[i] = None
+              # useless rn lo
+
+      data.AddData(to_pack)
 
 class EditTab(ttk.Frame):
     def __init__(self, master):

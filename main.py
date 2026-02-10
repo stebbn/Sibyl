@@ -5,13 +5,15 @@ import pywinstyles
 import sys
 
 from tkinter import ttk
+import tkinter.font as tkFont
+
 from ui import SidebarFrame
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
 def prettyPrint(msg : str): 
     print("[Main]:", msg)
 
-class SibylApp(tk.Tk):
+class Sibyl_App(tk.Tk):
     def __init__(self):
         super().__init__()
 
@@ -43,6 +45,12 @@ class SibylApp(tk.Tk):
         sv_ttk.set_theme(darkdetect.theme())
         self.apply_theme_to_titlebar()
 
+        bigfont = tkFont.Font(family="Helvetica",size=20)
+        self.option_add("*TCombobox*Listbox*Font", bigfont)
+
+        style = ttk.Style()
+        style.configure('TCombobox', selectbackground=None, selectforeground=None)
+
     def switch_page(self, page_name):
         try:
             page_class = self.ui_pages.get(page_name)
@@ -62,8 +70,8 @@ class SibylApp(tk.Tk):
             else:
                 prettyPrint(f"Uunable to switch to {page_name} | last page: {last_page}")
                 
-        except KeyError:
-            prettyPrint(f"invalid ui page: {page_name}")
+        except Exception as e:
+            prettyPrint(f"invalid ui page: {page_name} | {e}")
 
 
     def setup_geometry(self, width, height):
@@ -86,5 +94,5 @@ class SibylApp(tk.Tk):
             self.wm_attributes("-alpha", 1)
 
 if __name__ == "__main__":
-    app = SibylApp()
+    app = Sibyl_App()
     app.mainloop()

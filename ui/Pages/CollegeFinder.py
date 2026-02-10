@@ -12,10 +12,10 @@ class CollegeFinderFrame(ttk.Frame):
         self.btn = ttk.Button(self, text="Find College", command=self.read_input)
         self.btn.pack(pady=5)
 
-        self.lbl = ttk.Label(self, text="Enter Program Code")
+        self.lbl = ttk.Label(self, text="")
         self.lbl.pack(pady=5)
 
     def read_input(self):
         program = self.txt.get()
         college = get_college_by_program(program)
-        self.lbl.config(text=f"College: {college}")
+        self.lbl.config(text=f"{college}")

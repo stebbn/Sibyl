@@ -33,13 +33,18 @@ class DataPageFrame(ttk.Frame):
         self.ShowInformation()
 
     def ShowInformation(self):
-        for student_id, value in data.getDictData().items():
-       
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        student_records = data.GetData()
+        
+        for student_id, value in student_records.items():
             display_values = (
-                value[0], 
-                value[1], 
-                value[2],
-                value[3], 
-                value[4]  
-            )
+                    value.get("first_name", ""), 
+                    value.get("last_name", ""), 
+                    value.get("prog_code", ""),
+                    value.get("year", ""), 
+                    value.get("gender", "")  
+                )
             self.tree.insert(parent="", index="end", text=student_id, values=display_values)

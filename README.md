@@ -27,14 +27,12 @@ Should have the ff:
  - search by fields
 
  ## my todo list
- - design data schema lmao I ONLY KNOW JSON AAHHHH
- - modulize frames and create a oop returns for the tk frames i will be using.
- - hop on figma to design idk
  - verify all courses
- - divide data for colleges and courses
  - settle final features to what the scope of CRUDL the app has
+ - id duplicate verification
+ - loop holes on input
 
 ## install list
-import sv_ttk
-import darkdetect
-import pywinstyles
+- import sv_ttk
+- import darkdetect
+- import pywinstyles
