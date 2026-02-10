@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
 import sv_ttk
 import darkdetect
 import pywinstyles
 import sys
 
+from tkinter import ttk
 from ui import SidebarFrame
-from ui.Pages import CollegeFinderFrame, StudentPageFrame
+from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
 def prettyPrint(msg : str): 
     print("[Main]:", msg)
@@ -16,17 +16,18 @@ class SibylApp(tk.Tk):
         super().__init__()
 
         self.title("Sibyl")
-        self.setup_geometry(800, 500)
+        self.setup_geometry(900, 500)
 
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
 
         self.sidebar = SidebarFrame(self, on_nav_click=self.switch_page)
-        self.sidebar.grid(row=0, column=0, sticky="nsew")
+        self.sidebar.grid(row=0, column=0, sticky="nsew", pady=20)
 
         self.ui_pages = {
-            "College": CollegeFinderFrame,
-            "Students": StudentPageFrame,
+            "College"  : CollegeFinderFrame,
+            "Students" : StudentPageFrame,
+            "Data"     : DataPageFrame
         }
 
         self.PageContainer = ttk.Frame(self)

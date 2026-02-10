@@ -15,6 +15,7 @@ class SidebarFrame(ttk.Frame):
 
         self.CreateButton("Students", "Students")
         self.CreateButton("Colleges", "College")
+        self.CreateButton("Data Registry", "Data")
 
         spacer = ttk.Label(self, text="")
         spacer.pack(expand=True)

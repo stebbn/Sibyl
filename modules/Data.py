@@ -3,7 +3,7 @@ import json
 
 from pathlib import Path
 
-def prettyPrint(msg): # u doin too much gng
+def prettyPrint(msg):
     print("[DATA]:", msg)
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent
 json_path = BASE_DIR.parent / "data" / "directory.json"
 data_path = BASE_DIR.parent / "data" / "data.csv"
 
-dataFormat = ["id", "first_name", "last_name", "program_code", "year", "gender"]
+dataFormat = ["id_no", "first_name", "last_name", "program_code", "year", "gender"]
 
 try:
     with open(json_path, 'r') as f:
@@ -20,9 +20,9 @@ except FileNotFoundError as e:
     prettyPrint(f"{e}")
 except Exception as e:
     prettyPrint(f"An unexpected error occurred: {e}")
+    raise Exception("Unable to Load Data!")
 
 def get_college_by_program(program_code : str):
-
     program_code = program_code.upper()
 
     print(program_code)
@@ -39,10 +39,34 @@ def EditData():
     data = 2
 
 def GetData():
-    data = 1
+    database = {}
+   
+    try:
+        with open(data_path, mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, fieldnames=dataFormat)
+
+            for row in reader:
+                student_id = row['id_no']
+                database[student_id] = [
+                    row['first_name'],
+                    row['last_name'],
+                    row['program_code'],
+                    row['year'],
+                    row['gender']
+                ]
+        return database
+    except FileNotFoundError:
+        prettyPrint(f"{data_path} not found.")
+        return {}
+
+currentData = GetData()
+
+def getDictData(): return currentData
 
 def FindData():
     data = 1
 
 def FindUser():
     data = 1
+
+def GetFormat(): return dataFormat
