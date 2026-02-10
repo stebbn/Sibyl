@@ -5,8 +5,11 @@ import darkdetect
 import pywinstyles
 import sys
 
-from modules.Data import get_college_by_program
 from ui import SidebarFrame
+from ui.Pages import CollegeFinderFrame, StudentPageFrame
+
+def prettyPrint(msg : str): 
+    print("[Main]:", msg)
 
 class SibylApp(tk.Tk):
     def __init__(self):
@@ -18,14 +21,49 @@ class SibylApp(tk.Tk):
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
 
-        self.sidebar = SidebarFrame(self, on_nav_click="")
+        self.sidebar = SidebarFrame(self, on_nav_click=self.switch_page)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
 
-        self.setup_main_content()
+        self.ui_pages = {
+            "College": CollegeFinderFrame,
+            "Students": StudentPageFrame,
+        }
+
+        self.PageContainer = ttk.Frame(self)
+        self.PageContainer.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
+
+        self.CurrentPage = ""
+        self.StarterPage = "Students"
+
+        self.switch_page(self.StarterPage)
+        self.sidebar.UpdateSelected(self.StarterPage)
 
         # always make last or it wont apply all
         sv_ttk.set_theme(darkdetect.theme())
         self.apply_theme_to_titlebar()
+
+    def switch_page(self, page_name):
+        try:
+            page_class = self.ui_pages.get(page_name)
+            last_page  = self.CurrentPage
+
+            if page_class and self.CurrentPage != page_name:
+
+                for widget in self.PageContainer.winfo_children():
+                   widget.destroy()
+
+                new_page = page_class(self.PageContainer)
+                new_page.pack(fill="both", expand=True)
+
+                self.CurrentPage = page_name
+                
+                prettyPrint(f"Switched to {page_name}")
+            else:
+                prettyPrint(f"Uunable to switch to {page_name} | last page: {last_page}")
+                
+        except KeyError:
+            prettyPrint(f"invalid ui page: {page_name}")
+
 
     def setup_geometry(self, width, height):
         screen_width = self.winfo_screenwidth()
@@ -33,25 +71,7 @@ class SibylApp(tk.Tk):
         center_x = int(screen_width/2 - width / 2)
         center_y = int(screen_height/2 - height / 2)
         self.geometry(f'{width}x{height}+{center_x}+{center_y}')
-
-    def setup_main_content(self):
-        self.container = ttk.Frame(self)
-        self.container.grid(row=0, column=1, padx=20, pady=20, sticky="n")
-
-        self.txt = ttk.Entry(self.container)
-        self.txt.pack(pady=5)
-
-        self.btn = ttk.Button(self.container, text="Find College", command=self.read_input)
-        self.btn.pack(pady=5)
-
-        self.lbl = ttk.Label(self.container, text="Enter Program Code (e.g., BSCS)")
-        self.lbl.pack(pady=5)
-
-    def read_input(self):
-        program = self.txt.get()
-        college = get_college_by_program(program)
-        self.lbl.config(text=f"College: {college}")
-
+  
     def apply_theme_to_titlebar(self):
         version = sys.getwindowsversion()
         is_dark = sv_ttk.get_theme() == "dark"
