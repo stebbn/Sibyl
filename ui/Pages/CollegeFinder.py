@@ -3,7 +3,7 @@ from tkinter import ttk
 from modules.Data import get_college_by_program
 
 class CollegeFinderFrame(ttk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, controller):
         super().__init__(master, style="Card.TFrame")
       
         self.txt = ttk.Entry(self)

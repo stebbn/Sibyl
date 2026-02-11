@@ -13,6 +13,7 @@ json_path = BASE_DIR.parent / "data" / "directory.json"
 data_path = BASE_DIR.parent / "data" / "data.csv"
 
 dataFormat = ["id_no", "first_name", "last_name", "program_code", "year", "gender"]
+database   = False
 
 try:
     with open(json_path, 'r') as f:
@@ -43,14 +44,12 @@ def get_college_by_program(program_code : str):
     return "program not found in a college (?)"
 
 def AddData(data_table):
-    fieldnames = ['id_no', 'first_name', 'last_name', 'program_code', 'year', 'gender']
-    
     try:
         with open(data_path, mode='a', newline='', encoding='utf-8') as f:
             if f.tell() != 0: #check if empty
                 pass 
                 
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer = csv.DictWriter(f, fieldnames=dataFormat)
             
             row_to_save = {
                 'id_no': data_table[0],
@@ -63,21 +62,21 @@ def AddData(data_table):
             
             writer.writerow(row_to_save)
             prettyPrint(f"successfully wrote {data_table[0]}'s data")
+            UpdateData()
             return True
     except Exception as e:
         print(f"Error: {e}")
 
-
 def EditData():
     data = 2
 
-def FindData():
-    data = 1
+def FindData(id):
+    return False
 
 def FindUser():
     data = 1
 
-def GetData():
+def UpdateData():
     database = {}
     try:
         with open(data_path, mode='r', encoding='utf-8') as f:
@@ -97,6 +96,13 @@ def GetData():
         prettyPrint(f"{data_path} not found.")
         return {}
 
+def GetData():
+    if not database:
+        UpdateData()
+        return database
+    else:
+        return database
+    
 def GetFormat(): return dataFormat
 
 def VerifyFormat(data_type, user_input, name):

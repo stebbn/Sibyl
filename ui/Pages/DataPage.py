@@ -4,7 +4,7 @@ import modules.Data as data
 from tkinter import ttk
 
 class DataPageFrame(ttk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, controller):
         super().__init__(master, style="Card.TFrame")
     
         columns = ("first_name", "last_name", "prog_code", "year", "gender")

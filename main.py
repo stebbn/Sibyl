@@ -35,6 +35,7 @@ class Sibyl_App(tk.Tk):
         self.PageContainer = ttk.Frame(self)
         self.PageContainer.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
 
+        self.PageClass   = None
         self.CurrentPage = ""
         self.StarterPage = "Students"
 
@@ -61,8 +62,9 @@ class Sibyl_App(tk.Tk):
                 for widget in self.PageContainer.winfo_children():
                    widget.destroy()
 
-                new_page = page_class(self.PageContainer)
-                new_page.pack(fill="both", expand=True)
+                self.PageClass = None
+                self.PageClass = page_class(self.PageContainer, controller = self)
+                self.PageClass.pack(fill="both", expand=True)
 
                 self.CurrentPage = page_name
                 
