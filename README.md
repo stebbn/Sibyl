@@ -29,8 +29,8 @@ Should have the ff:
  ## my todo list
  - verify all courses
  - settle final features to what the scope of CRUDL the app has
- - id duplicate verification
- - loop holes on input
+   - crudl for program and college
+ - polish ui / remove dat old feel idk
 
 ## install list
 - import sv_ttk

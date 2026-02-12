@@ -7,28 +7,55 @@ def prettyPrint(msg : str):
 
 fields = ["ID Number", "First Name", "Last Name", "Program Code", "Year Level", "Gender"]
 
+def save_data(self, isEdit=False):
+    self.warn("")
+    data_format = data.GetFormat()
+    to_pack = []
+
+    for i, data_item in enumerate(data_format):
+        if isEdit and i == 0:
+            to_pack.append(self.data_id)
+            continue
+        else:
+            inputted = self.entries[i].get().strip()
+            
+        verified, msg = data.VerifyFormat(data_item, inputted, fields[i])
+
+        if verified:
+            to_pack.append(msg)
+        else:
+            self.warn(msg)
+            return
+
+    if isEdit:
+        data.EditData(self.data_id, to_pack)
+        self.warn("Succesfully edited.", "#18C421")
+    else:
+        data.AddData(to_pack)
+        self.warn("Succesfully added.", "#18C421")
+
 class StudentPageFrame(ttk.Frame):
     def __init__(self, master, controller):
         super().__init__(master)
 
-        style = ttk.Style()
-        style.configure("TNotebook", tabposition="n")
+        self.pack(expand=True, fill="both") 
 
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(expand=True, fill="both", padx=10, pady=10)
 
         self.tab_insert = InsertTab(self.notebook)
         self.tab_edit = EditTab(self.notebook)
-        self.tab_search = SearchTab(self.notebook)
 
         self.notebook.add(self.tab_insert, text="Insert New Student")
         self.notebook.add(self.tab_edit, text="Edit Information")
-        self.notebook.add(self.tab_search, text="Search Registry")
 
 class InsertTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.setup_ui()
+        self.WarnLabel = False
+
+        self.warn("")
 
     def setup_ui(self):
         self.form_container = ttk.Frame(self)
@@ -50,91 +77,125 @@ class InsertTab(ttk.Frame):
         GenderOptions = ["Male", "Female", "Non-Binary"]
 
         entry = ttk.Combobox(self.form_container, values=GenderOptions, state="readonly", justify="center")
+        self.entries[5] = entry
         entry.bind("<<ComboboxSelected>>", lambda e: self.focus())
         entry.grid(row=5, column=1, padx=10, pady=10, sticky="w")
-        self.entries[5] = entry
 
-        ttk.Button(
-            self.form_container, 
-            text="Save Student Record", 
-            style="Accent.TButton",
-            command=self.save_data
-        ).grid(row=len(fields), column=0, columnspan=2, pady=10)
+        self.CurrentButton = ttk.Button(
+                self.form_container, 
+                text="Save Student Record", 
+                style="Accent.TButton",
+                command=lambda:save_data(self)
+            )
+        self.CurrentButton.grid(row=len(fields), column=0, columnspan=2, pady=10)
 
-        self.WarnLabel = ttk.Label(
-                    self.form_container, 
-                    text="",
-                    foreground= "#B92905"
-                )
-        self.WarnLabel.grid(row=len(fields)+1, column=0, columnspan=2, pady=0)
-
-    def save_data(self):
-      self.WarnLabel.config(text="")
-
-      format = data.GetFormat()
-      to_pack = {}
-
-      for i, data_item in enumerate(format):
-          inputted = self.entries[i].get().strip()
-          verified, msg = data.VerifyFormat(data_item, inputted, fields[i])
-          # msg contains corrected format
-
-          if inputted and verified == True:
-            to_pack[i] = msg
-          elif verified != True:
-              self.WarnLabel.config(text=msg)
-              return
-          else: 
-              to_pack[i] = None
-              # useless rn lo
-
-      data.AddData(to_pack)
+    def warn(self, msg : str, color="#B92905"):
+        if not self.WarnLabel:
+                self.WarnLabel = ttk.Label(
+                self.form_container, 
+                text=msg,
+                foreground= color
+            )
+                self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
+        else:
+            self.WarnLabel.config(text=msg, foreground=color)
+            self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
 
 class EditTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
         self.setup_ui()
-       
+    
+        self.warn("")
+
     def setup_ui(self):
         self.form_container = ttk.Frame(self)
         self.form_container.place(relx=0.5, rely=0.51, anchor="center")
+
+        self.WarnLabel = False
+
+        self.open_search()
+
+    def warn(self, msg : str, color="#B92905"):
+        if not self.WarnLabel:
+                self.WarnLabel = ttk.Label(
+                self.form_container, 
+                text=msg,
+                foreground= color
+            )
+                self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
+        else:
+            self.WarnLabel.config(text=msg, foreground=color)
+            self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
+
+    def clear_container(self):
+        for widget in self.form_container.winfo_children():
+                   widget.destroy()
+
+        self.WarnLabel = False
+
+    def open_search(self):
+        self.clear_container()
 
         self.SearchEntry = ttk.Entry(self.form_container, width=30)
         self.SearchEntry.grid(row=3, column=0, padx=10, pady=10, sticky="w")
        
         self.CurrentButton = ttk.Button(
                             self.form_container, 
-                            text="Select Id", 
+                            text="Select ID", 
                             style="Accent.TButton",
                             command=self.search_id
                         )
-        self.CurrentButton.grid(row=4, column=0, columnspan=2, pady=10)
-        self.WarnLabel = False
-
-    def warn(self, msg : str):
-        if not self.WarnLabel:
-                self.WarnLabel = ttk.Label(
-                self.form_container, 
-                text=msg,
-                foreground= "#B92905"
-            )
-                self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
-        else:
-            self.WarnLabel.config(text=msg)
-            self.WarnLabel.grid(row=self.CurrentButton.grid_info()["row"]+1, column=0, columnspan=2, pady=0)
+        self.CurrentButton.grid(row=4, column=0, pady=10)
+        self.warn("")
 
     def search_id(self): 
         search = data.FindData(self.SearchEntry.get())
         if search:
-            return True
+            self.open_edit(search)
         else:
             self.warn("ID Not Found.")
 
+    def open_edit(self, student_data: dict):
+        self.data_id = next(iter(student_data))
+        data_content = student_data[self.data_id]
+        data_format = data.GetFormat()
+        
+        self.clear_container()
+        self.entries = {}
 
+        ttk.Label(self.form_container, text=f"Editing ID: {self.data_id}", font=("", 12, "bold")).grid(row=0, column=0, pady=20)
 
-    def edit_id(): return True
+        for i, field in enumerate(fields[1:5], start=1):
+            ttk.Label(self.form_container, text=field + ":").grid(row=i, column=0, padx=10, pady=5, sticky="e")
+            entry = ttk.Entry(self.form_container, width=30)
+            entry.insert(0, data_content[data_format[i]])
+            entry.grid(row=i, column=1, padx=10, pady=10, sticky="w")
+            self.entries[i] = entry
 
-class SearchTab(ttk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        ttk.Label(self, text="Search Registry").pack(pady=20)
+        ttk.Label(self.form_container, text="Gender:").grid(row=5, column=0, padx=10, pady=5, sticky="e")
+        
+        gender_options = ["Male", "Female", "Non-Binary"]
+
+        combo = ttk.Combobox(self.form_container, values=gender_options, state="readonly", justify="center")
+        combo.set(data_content[data_format[5]])
+        combo.grid(row=5, column=1, padx=10, pady=10, sticky="w")
+        combo.bind("<<ComboboxSelected>>", lambda e: self.focus())
+
+        self.entries[5] = combo
+
+        self.CurrentButton = ttk.Button(
+            self.form_container, 
+            text="Update Student Record", 
+            style="Accent.TButton",
+            command=lambda: save_data(self, True)
+        )
+        self.CurrentButton.grid(row=6, column=0, padx=10, pady=5, sticky="e")
+
+        ttk.Button(
+            self.form_container, 
+            text="Cancel / Back to Search", 
+            command=self.open_search
+        ).grid(row=6, column=1, padx=10, pady=5, sticky="w")
+
+        self.warn("")

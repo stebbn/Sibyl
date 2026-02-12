@@ -1,12 +1,14 @@
 import tkinter as tk
+import tkinter.font as tkFont
+
 import sv_ttk
 import darkdetect
 import pywinstyles
+
 import sys
+import traceback
 
 from tkinter import ttk
-import tkinter.font as tkFont
-
 from ui import SidebarFrame
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
@@ -19,6 +21,7 @@ class Sibyl_App(tk.Tk):
 
         self.title("Sibyl")
         self.setup_geometry(900, 500)
+        self.minsize(900, 500)
 
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
@@ -39,6 +42,9 @@ class Sibyl_App(tk.Tk):
         self.CurrentPage = ""
         self.StarterPage = "Students"
 
+        bigfont = tkFont.Font(family="Helvetica",size=20)
+        self.option_add("*TCombobox*Listbox*Font", bigfont)
+
         self.switch_page(self.StarterPage)
         self.sidebar.UpdateSelected(self.StarterPage)
 
@@ -46,13 +52,13 @@ class Sibyl_App(tk.Tk):
         sv_ttk.set_theme(darkdetect.theme())
         self.apply_theme_to_titlebar()
 
-        bigfont = tkFont.Font(family="Helvetica",size=20)
-        self.option_add("*TCombobox*Listbox*Font", bigfont)
-
         style = ttk.Style()
         style.configure('TCombobox', selectbackground=None, selectforeground=None)
+        
+        style = ttk.Style()
+        style.configure("TNotebook", tabposition="n")
 
-    def switch_page(self, page_name):
+    def switch_page(self, page_name : str):
         try:
             page_class = self.ui_pages.get(page_name)
             last_page  = self.CurrentPage
@@ -70,11 +76,10 @@ class Sibyl_App(tk.Tk):
                 
                 prettyPrint(f"Switched to {page_name}")
             else:
-                prettyPrint(f"Uunable to switch to {page_name} | last page: {last_page}")
+                prettyPrint(f"Unable to switch to {page_name} | last page: {last_page}")
                 
         except Exception as e:
-            prettyPrint(f"invalid ui page: {page_name} | {e}")
-
+            prettyPrint(f"invalid ui page: {page_name} | {e} | {traceback.format_exc()}")
 
     def setup_geometry(self, width, height):
         screen_width = self.winfo_screenwidth()

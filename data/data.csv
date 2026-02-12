@@ -1,13 +1,4 @@
-2023-0001,Juan,Dela Cruz,BSCS,1,Male
-2023-0452,Maria,Santos,BSCE,1,Female
-2022-1105,Sittie,Aminah,BSIT,2,Female
-2021-0987,Mark,Villanueva,BSEE,3,Male
-2020-0012,Elena,Gomez,BSStat,4,Female
-2023-1522,Antonio,Luna,BSCS,1,Male
-2022-0331,Clara,Recto,BSIT,2,Female
-2021-0005,Leonor,Rivera,BSN,4,Female
-2024-0010,Diego,Silang,BSME,1,Male
-2022-0998,Gabriela,Silang,BSEd,3,Female
+id_no,first_name,last_name,program_code,year,gender
 2023-0001,Juan,Dela Cruz,BSCS,1,Male
 2023-0452,Maria,Santos,BSCE,1,Female
 2022-1105,Sittie,Aminah,BSIT,2,Female
@@ -30,13 +21,14 @@
 2023-0777,Fe,del Mundo,BSBio,1,Female
 2024-0911,Ramon,Magsaysay,BSME,1,Male
 2022-0404,Corazon,Aquino,BSPolSci,2,Female
-2021-0505,Miriam,Defensor,BSLaw,3,Female
-2023-1111,Francis,Magalona,BSMusic,1,Male
-2020-2222,Lea,Salonga,BSMusic,4,Female
 2024-1022,a,a,a,1,cool
 2024-1200,a,a,a,1,Male
-2024-1222,Aa,Aa,BSCS,1,Male
+2024-1222,Aa,Aa,BSCS,1,Female
 2024-1212,Aa,Aa,BSMath,1,Male
 2024-1233,Aa,Sss,BSCS,1,Male
 2024-1211,Saa,Aa,BSCS,1,Female
-2024-1222,Aa,Aa,BSCS,1,Female
+2023-1111,Aaaaaaaaaaa,Aaaaaaaaaaaaa,BSMath,1,Arrancar
+2025-1070,Techno,Blade,BSCE,1,Male
+2024-1010,Yaseeen,################,BSCS,1,Male
+2024-1070,Steve Nash,Llamedo,BSCS,2,Male
+2024-0090,Aizen,Sosuke,BSEE,4,Male

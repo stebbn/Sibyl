@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+import modules.Data as data
+
 def prettyPrint(msg : str): 
     print("[SIDEBAR]:", msg)
 
@@ -12,6 +14,12 @@ class SidebarFrame(ttk.Frame):
         self.on_nav_click = on_nav_click
         self.nav_buttons = {}
         self.current_button = None
+
+        logo_path = data.get_file_parent() / "ui" / "Assets" / "Logo.png"
+        self.IconImage = tk.PhotoImage(file=logo_path).subsample(10, 10)
+
+        self.logo_lbl = ttk.Label(self, image=self.IconImage)
+        self.logo_lbl.pack(pady=30)
 
         self.CreateButton("Students", "Students")
         self.CreateButton("Colleges", "College")
