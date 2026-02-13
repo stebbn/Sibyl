@@ -1,6 +1,7 @@
 import csv
 import json
 import re
+import time
 
 from pathlib import Path
 
@@ -115,6 +116,9 @@ def FindData(student_id : str) -> bool | dict:
 def UpdateData() -> dict:
     global database
     loaded_data = {}
+
+    runStart = time.perf_counter()
+
     try:
         if not data_path.exists():
             return {}
@@ -130,10 +134,9 @@ def UpdateData() -> dict:
                 }
         database = loaded_data
         prettyPrint("Data successfully synced")
-        return database
     except Exception as e:
         prettyPrint(f"Sync Error: {e}")
-        return {"bum alert" : 
+        database = {"bum alert" : 
                     {
                     "first_name": "something",
                     "last_name": "failed",
@@ -142,6 +145,34 @@ def UpdateData() -> dict:
                     "gender": "so pls get good"
                     }
                 }
+    runEnd = time.perf_counter()
+    prettyPrint(f"took {runEnd - runStart} seconds for data laod.")
+
+    return database
+
+def DeleteData(student_id : str) -> bool:
+    global database
+    current_data = GetData()
+
+    if student_id not in current_data:
+        return False
+
+    del current_data[student_id]
+
+    try:
+        with open(data_path, mode='w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=dataFormat)
+            writer.writeheader()
+            for sid, info in current_data.items():
+                row = {'id_no': sid, **info}
+                writer.writerow(row)
+
+        database = current_data
+        prettyPrint(f"Deleted {student_id}")
+        return True
+    except Exception as e:
+        prettyPrint(f"Delete Error: {e} | Data remains the same.")
+        return False
 
 def GetData() -> dict:
     global database
@@ -180,3 +211,5 @@ def VerifyFormat(data_type : str, user_input : str, name : str) -> list[bool, st
     return [True, val]
 
 def GetFormat(): return dataFormat
+
+UpdateData()

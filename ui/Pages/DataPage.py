@@ -10,6 +10,8 @@ class DataPageFrame(ttk.Frame):
     def __init__(self, master, controller):
         super().__init__(master, style="Card.TFrame")
         
+        self.controller = controller
+
         self.CurrentSort = "#0"
         self.ReverseSort = False
 
@@ -127,12 +129,20 @@ class DataPageFrame(ttk.Frame):
         selected = self.tree.selection()
         if selected:
             student_id = self.tree.item(selected[0])["text"]
-            prettyPrint(f"edit edit {student_id}")
+            
+            self.controller.sidebar.handle_click(None, "Students")
+            self.controller.PageClass.notebook.select(1)
+
+            self.controller.PageClass.tab_edit.search_id(student_id)
+
         else: prettyPrint("no selection for edit")
 
     def delete_student(self):
         selected = self.tree.selection()
         if selected:
             student_id = self.tree.item(selected[0])["text"]
-            prettyPrint(f"delete delete {student_id}")
+           
+            data.DeleteData(student_id)
+            self.show_info()
+            
         else: prettyPrint("no selection for delete")

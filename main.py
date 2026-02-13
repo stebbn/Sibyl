@@ -18,8 +18,10 @@ def prettyPrint(msg : str):
 class Sibyl_App(tk.Tk):
     def __init__(self):
         super().__init__()
+        
+        self.withdraw()
 
-        self.title("Sibyl")
+        self.title("Sibyl - Student Information System")
         self.setup_geometry(900, 500)
         self.minsize(900, 500)
 
@@ -27,16 +29,20 @@ class Sibyl_App(tk.Tk):
         self.rowconfigure(0, weight=1)
 
         self.sidebar = SidebarFrame(self, on_nav_click=self.switch_page)
-        self.sidebar.grid(row=0, column=0, sticky="nsew", pady=20)
+        self.sidebar.grid(row=0, column=0, sticky="nsew", padx=0)
+
+        self.PageContainer = ttk.Frame(self)
+        self.PageContainer.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
+        
+        self.grid_columnconfigure(0, weight=0) 
+        self.grid_columnconfigure(1, weight=1) 
+        self.grid_rowconfigure(0, weight=1)   
 
         self.ui_pages = {
             "College"  : CollegeFinderFrame,
             "Students" : StudentPageFrame,
             "Data"     : DataPageFrame
         }
-
-        self.PageContainer = ttk.Frame(self)
-        self.PageContainer.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
 
         self.PageClass   = None
         self.CurrentPage = ""
@@ -49,14 +55,21 @@ class Sibyl_App(tk.Tk):
         self.sidebar.UpdateSelected(self.StarterPage)
 
         # always make last or it wont apply all
-        sv_ttk.set_theme(darkdetect.theme())
-        self.apply_theme_to_titlebar()
+        self.apply_theme()
 
         style = ttk.Style()
-        style.configure('TCombobox', selectbackground=None, selectforeground=None)
+        style.configure("Sidebar.TFrame", 
+                        background="#1A1919" if darkdetect.theme() else "#CCCCCC", 
+                        borderwidth=0, 
+                        highlightthickness=3
+                        ) 
+        style.configure("Sidebar2.TFrame",background="#1A1919" if darkdetect.theme() else "#CCCCCC",) 
         
-        style = ttk.Style()
+        style.configure('TCombobox', selectbackground=None, selectforeground=None)
         style.configure("TNotebook", tabposition="n")
+        style.configure('TButton', font=('Bahnschrift SemiLight', 10))
+
+        self.deiconify()
 
     def switch_page(self, page_name : str):
         try:
@@ -88,15 +101,17 @@ class Sibyl_App(tk.Tk):
         center_y = int(screen_height/2 - height / 2)
         self.geometry(f'{width}x{height}+{center_x}+{center_y}')
   
-    def apply_theme_to_titlebar(self):
+    def apply_theme(self):
+        sv_ttk.set_theme(darkdetect.theme())
+
+        self.is_dark = sv_ttk.get_theme() == "dark"
         version = sys.getwindowsversion()
-        is_dark = sv_ttk.get_theme() == "dark"
-        color = "#1c1c1c" if is_dark else "#141313"
+        color = "#1A1919" if darkdetect.theme() else "#CCCCCC"
 
         if version.major == 10 and version.build >= 22000:
             pywinstyles.change_header_color(self, color)
         elif version.major == 10:
-            pywinstyles.apply_style(self, "dark" if is_dark else "normal")
+            pywinstyles.apply_style(self, "dark" if self.is_dark else "normal")
             self.wm_attributes("-alpha", 0.99)
             self.wm_attributes("-alpha", 1)
 

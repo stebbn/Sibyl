@@ -149,8 +149,8 @@ class EditTab(ttk.Frame):
         self.CurrentButton.grid(row=4, column=0, pady=10)
         self.warn("")
 
-    def search_id(self): 
-        search = data.FindData(self.SearchEntry.get())
+    def search_id(self, id=None): 
+        search = data.FindData(id or self.SearchEntry.get())
         if search:
             self.open_edit(search)
         else:

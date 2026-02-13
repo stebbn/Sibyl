@@ -9,7 +9,7 @@ def prettyPrint(msg : str):
 class SidebarFrame(ttk.Frame):
     def __init__(self, master, on_nav_click):
        
-        super().__init__(master, style="Card.TFrame") 
+        super().__init__(master, style="Sidebar.TFrame") 
         
         self.on_nav_click = on_nav_click
         self.nav_buttons = {}
@@ -18,7 +18,11 @@ class SidebarFrame(ttk.Frame):
         logo_path = data.get_file_parent() / "ui" / "Assets" / "Logo.png"
         self.IconImage = tk.PhotoImage(file=logo_path).subsample(10, 10)
 
-        self.logo_lbl = ttk.Label(self, image=self.IconImage)
+        self.logo_lbl = ttk.Label(self, image=self.IconImage, 
+            bg="#2b2b2b",  
+            borderwidth=0, 
+            highlightthickness=0
+            )
         self.logo_lbl.pack(pady=30)
 
         self.CreateButton("Students", "Students")
@@ -28,7 +32,7 @@ class SidebarFrame(ttk.Frame):
         spacer = ttk.Label(self, text="")
         spacer.pack(expand=True)
 
-        self.info_lbl = ttk.Label(self, text="v1", font=("Segoe UI", 5))
+        self.info_lbl = ttk.Label(self, text="To create and manage.", font=("Bahnschrift SemiLight", 7, "italic"))
         self.info_lbl.pack(pady=10)
 
         self.UpdateSelected = self.SelectedUpdated
@@ -52,10 +56,10 @@ class SidebarFrame(ttk.Frame):
     def CreateButton(self, name : str, call_name : str):
         btn = ttk.Button(
             self, 
-            text=name, 
+            text=name,
             command=lambda: self.handle_click(btn,call_name)
         )
-        btn.pack(fill="x", padx=10, pady=5)
+        btn.pack(fill="x", padx=10, pady=20)
         self.nav_buttons[call_name] = btn
 
     def handle_click(self, btn:ttk.Button, page_name):
