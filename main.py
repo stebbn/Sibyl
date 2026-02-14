@@ -2,14 +2,13 @@ import tkinter as tk
 import tkinter.font as tkFont
 
 import sv_ttk
-import darkdetect
 import pywinstyles
 
 import sys
 import traceback
 
 from tkinter import ttk
-from ui import SidebarFrame
+from ui import SidebarFrame, getBG, getTheme
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
 def prettyPrint(msg : str): 
@@ -27,6 +26,22 @@ class Sibyl_App(tk.Tk):
 
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
+
+        self.Theme = "Dark" if getTheme() == "Dark" else "Light"
+
+        self.apply_theme()
+
+        style = ttk.Style()
+        style.configure("Sidebar.TFrame", 
+                        background=getBG(self.Theme), 
+                        borderwidth=0, 
+                        highlightthickness=3
+                        ) 
+        style.configure("Sidebar2.TFrame",background=getBG(self.Theme),) 
+        
+        style.configure('TCombobox', selectbackground=None, selectforeground=None)
+        style.configure("TNotebook", tabposition="n")
+        style.configure('TButton', font=('Bahnschrift SemiLight', 10))
 
         self.sidebar = SidebarFrame(self, on_nav_click=self.switch_page)
         self.sidebar.grid(row=0, column=0, sticky="nsew", padx=0)
@@ -53,21 +68,6 @@ class Sibyl_App(tk.Tk):
 
         self.switch_page(self.StarterPage)
         self.sidebar.UpdateSelected(self.StarterPage)
-
-        # always make last or it wont apply all
-        self.apply_theme()
-
-        style = ttk.Style()
-        style.configure("Sidebar.TFrame", 
-                        background="#1A1919" if darkdetect.theme() else "#CCCCCC", 
-                        borderwidth=0, 
-                        highlightthickness=3
-                        ) 
-        style.configure("Sidebar2.TFrame",background="#1A1919" if darkdetect.theme() else "#CCCCCC",) 
-        
-        style.configure('TCombobox', selectbackground=None, selectforeground=None)
-        style.configure("TNotebook", tabposition="n")
-        style.configure('TButton', font=('Bahnschrift SemiLight', 10))
 
         self.deiconify()
 
@@ -102,11 +102,11 @@ class Sibyl_App(tk.Tk):
         self.geometry(f'{width}x{height}+{center_x}+{center_y}')
   
     def apply_theme(self):
-        sv_ttk.set_theme(darkdetect.theme())
+        sv_ttk.set_theme(self.Theme)
 
         self.is_dark = sv_ttk.get_theme() == "dark"
         version = sys.getwindowsversion()
-        color = "#1A1919" if darkdetect.theme() else "#CCCCCC"
+        color = getBG(self.Theme)
 
         if version.major == 10 and version.build >= 22000:
             pywinstyles.change_header_color(self, color)

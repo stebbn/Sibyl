@@ -1,0 +1,32 @@
+program_code,program_name,college_code
+BSCS,Bachelor of Science in Computer Science,CCS
+BSIT,Bachelor of Science in Information Technology,CCS
+BSIS,Bachelor of Science in Information Systems,CCS
+BSCE,Bachelor of Science in Civil Engineering,COET
+BSME,Bachelor of Science in Mechanical Engineering,COET
+BSEE,Bachelor of Science in Electrical Engineering,COET
+BSECE,Bachelor of Science in Electronics and Communications Engineering,COET
+BSChE,Bachelor of Science in Chemical Engineering,COET
+BSCpE,Bachelor of Science in Computer Engineering,COET
+BSCerE,Bachelor of Science in Ceramic Engineering,COET
+BSMetE,Bachelor of Science in Metallurgical Engineering,COET
+BSBio,Bachelor of Science in Biology,CSM
+BSChem,Bachelor of Science in Chemistry,CSM
+BSMath,Bachelor of Science in Mathematics,CSM
+BSPhys,Bachelor of Science in Physics,CSM
+BSStat,Bachelor of Science in Statistics,CSM
+BAPsych,Bachelor of Arts in Psychology,CASS
+BSPsych,Bachelor of Science in Psychology,CASS
+BAELS,Bachelor of Arts in English Language Studies,CASS
+BALCS,Bachelor of Arts in Literary and Cultural Studies,CASS
+BAFil,Bachelor of Arts in Filipino,CASS
+BSA,Bachelor of Science in Accountancy,CEBA
+BSBA-MM,BSBA in Marketing Management,CEBA
+BSBA-Econ,BSBA in Economics,CEBA
+BSHM,Bachelor of Science in Hospitality Management,CEBA
+BEEd,Bachelor of Elementary Education,CED
+BSEd-Sci,BSEd in Science,CED
+BSEd-Math,BSEd in Mathematics,CED
+BTVTEd,Bachelor of Technical-Vocational Teacher Education,CED
+BTLEd,Bachelor of Technology and Livelihood Education,CED
+BSN,Bachelor of Science in Nursing,CHS

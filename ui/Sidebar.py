@@ -19,20 +19,17 @@ class SidebarFrame(ttk.Frame):
         self.IconImage = tk.PhotoImage(file=logo_path).subsample(10, 10)
 
         self.logo_lbl = ttk.Label(self, image=self.IconImage, 
-            bg="#2b2b2b",  
-            borderwidth=0, 
-            highlightthickness=0
-            )
+            background=ttk.Style().lookup("Sidebar.TFrame", "background"),  )
         self.logo_lbl.pack(pady=30)
 
         self.CreateButton("Students", "Students")
         self.CreateButton("Colleges", "College")
         self.CreateButton("Data Registry", "Data")
 
-        spacer = ttk.Label(self, text="")
+        spacer = ttk.Label(self, text="", background=ttk.Style().lookup("Sidebar.TFrame", "background"))
         spacer.pack(expand=True)
 
-        self.info_lbl = ttk.Label(self, text="To create and manage.", font=("Bahnschrift SemiLight", 7, "italic"))
+        self.info_lbl = ttk.Label(self, text="To create and manage.", font=("Bahnschrift SemiLight", 7, "italic"), background=ttk.Style().lookup("Sidebar.TFrame", "background"))
         self.info_lbl.pack(pady=10)
 
         self.UpdateSelected = self.SelectedUpdated
