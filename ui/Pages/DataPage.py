@@ -76,7 +76,7 @@ class DataPageFrame(ttk.Frame):
         for item in self.tree.get_children():
             self.tree.delete(item)
 
-        student_records = data.GetData()
+        student_records = data.student_data
         search_query = search_query.lower()
         
         for student_id, value in student_records.items():
@@ -142,7 +142,7 @@ class DataPageFrame(ttk.Frame):
         if selected:
             student_id = self.tree.item(selected[0])["text"]
            
-            data.DeleteData(student_id)
+            data.DeleteStudent(student_id)
             self.show_info()
             
         else: prettyPrint("no selection for delete")

@@ -1,18 +1,19 @@
 import tkinter as tk
 import tkinter.font as tkFont
 
+import sys
+import traceback
 import sv_ttk
 import pywinstyles
 
-import sys
-import traceback
-
 from tkinter import ttk
-from ui import SidebarFrame, getBG, getTheme
+from ui import SidebarFrame, getBG, getTheme, setup_geometry, apply_theme
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
 def prettyPrint(msg : str): 
     print("[Main]:", msg)
+
+width, height = 900, 500
 
 class Sibyl_App(tk.Tk):
     def __init__(self):
@@ -21,15 +22,16 @@ class Sibyl_App(tk.Tk):
         self.withdraw()
 
         self.title("Sibyl - Student Information System")
-        self.setup_geometry(900, 500)
-        self.minsize(900, 500)
+
+        setup_geometry(self, width, height)
+        self.minsize(width, height)
 
         self.columnconfigure(1, weight=1)
         self.rowconfigure(0, weight=1)
 
-        self.Theme = "Dark" if getTheme() == "Dark" else "Light"
+        self.Theme = getTheme()
 
-        self.apply_theme()
+        apply_theme(self)
 
         style = ttk.Style()
         style.configure("Sidebar.TFrame", 
@@ -93,27 +95,6 @@ class Sibyl_App(tk.Tk):
                 
         except Exception as e:
             prettyPrint(f"invalid ui page: {page_name} | {e} | {traceback.format_exc()}")
-
-    def setup_geometry(self, width, height):
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        center_x = int(screen_width/2 - width / 2)
-        center_y = int(screen_height/2 - height / 2)
-        self.geometry(f'{width}x{height}+{center_x}+{center_y}')
-  
-    def apply_theme(self):
-        sv_ttk.set_theme(self.Theme)
-
-        self.is_dark = sv_ttk.get_theme() == "dark"
-        version = sys.getwindowsversion()
-        color = getBG(self.Theme)
-
-        if version.major == 10 and version.build >= 22000:
-            pywinstyles.change_header_color(self, color)
-        elif version.major == 10:
-            pywinstyles.apply_style(self, "dark" if self.is_dark else "normal")
-            self.wm_attributes("-alpha", 0.99)
-            self.wm_attributes("-alpha", 1)
 
 if __name__ == "__main__":
     app = Sibyl_App()

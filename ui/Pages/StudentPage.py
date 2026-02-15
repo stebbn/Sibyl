@@ -9,7 +9,7 @@ fields = ["ID Number", "First Name", "Last Name", "Program Code", "Year Level", 
 
 def save_data(self, isEdit=False):
     self.warn("")
-    data_format = data.GetFormat()
+    data_format = data.GetFormat("Student")
     to_pack = []
 
     for i, data_item in enumerate(data_format):
@@ -28,10 +28,10 @@ def save_data(self, isEdit=False):
             return
 
     if isEdit:
-        data.EditData(self.data_id, to_pack)
+        data.EditStudent(self.data_id, to_pack)
         self.warn("Succesfully edited.", "#18C421")
     else:
-        data.AddData(to_pack)
+        data.AddStudent(to_pack)
         self.warn("Succesfully added.", "#18C421")
 
 class StudentPageFrame(ttk.Frame):
@@ -150,7 +150,7 @@ class EditTab(ttk.Frame):
         self.warn("")
 
     def search_id(self, id=None): 
-        search = data.FindData(id or self.SearchEntry.get())
+        search = data.FindStudentData(id or self.SearchEntry.get())
         if search:
             self.open_edit(search)
         else:
@@ -159,7 +159,7 @@ class EditTab(ttk.Frame):
     def open_edit(self, student_data: dict):
         self.data_id = next(iter(student_data))
         data_content = student_data[self.data_id]
-        data_format = data.GetFormat()
+        data_format = data.GetFormat("Student")
         
         self.clear_container()
         self.entries = {}

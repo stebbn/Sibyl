@@ -2,31 +2,48 @@ program_code,program_name,college_code
 BSCS,Bachelor of Science in Computer Science,CCS
 BSIT,Bachelor of Science in Information Technology,CCS
 BSIS,Bachelor of Science in Information Systems,CCS
+BSECT-ES,BS in Electronics and Computer Technology (Embedded Systems),CCS
+BSECT-CS,BS in Electronics and Computer Technology (Communications System),CCS
 BSCE,Bachelor of Science in Civil Engineering,COET
-BSME,Bachelor of Science in Mechanical Engineering,COET
-BSEE,Bachelor of Science in Electrical Engineering,COET
-BSECE,Bachelor of Science in Electronics and Communications Engineering,COET
+BSCerE,Bachelor of Science in Ceramics Engineering,COET
 BSChE,Bachelor of Science in Chemical Engineering,COET
 BSCpE,Bachelor of Science in Computer Engineering,COET
-BSCerE,Bachelor of Science in Ceramic Engineering,COET
-BSMetE,Bachelor of Science in Metallurgical Engineering,COET
-BSBio,Bachelor of Science in Biology,CSM
+BSECE,Bachelor of Science in Electronics & Communications Engineering,COET
+BSEE,Bachelor of Science in Electrical Engineering,COET
+BSME,Bachelor of Science in Mechanical Engineering,COET
+BSMetE,Bachelor of Science METALLURGICAL ENGINEERING,COET
+BS-EMET,Bachelor of Science in Environmental Engineering Technology,COET
+BSIAM,Bachelor of Science in Industrial Automation & Mechatronics,COET
+BSETM,Bachelor of Science in Engineering Technology Management,COET
+BSBio-Bot,Bachelor of Science in Biology (Botany),CSM
+BSBio-Zoo,Bachelor of Science in Biology (Zoology),CSM
+BSBio-Mar,Bachelor of Science in Biology (Marine),CSM
+BSBio-Gen,Bachelor of Science in Biology (General),CSM
 BSChem,Bachelor of Science in Chemistry,CSM
 BSMath,Bachelor of Science in Mathematics,CSM
 BSPhys,Bachelor of Science in Physics,CSM
 BSStat,Bachelor of Science in Statistics,CSM
-BAPsych,Bachelor of Arts in Psychology,CASS
 BSPsych,Bachelor of Science in Psychology,CASS
-BAELS,Bachelor of Arts in English Language Studies,CASS
-BALCS,Bachelor of Arts in Literary and Cultural Studies,CASS
-BAFil,Bachelor of Arts in Filipino,CASS
-BSA,Bachelor of Science in Accountancy,CEBA
-BSBA-MM,BSBA in Marketing Management,CEBA
-BSBA-Econ,BSBA in Economics,CEBA
-BSHM,Bachelor of Science in Hospitality Management,CEBA
-BEEd,Bachelor of Elementary Education,CED
-BSEd-Sci,BSEd in Science,CED
-BSEd-Math,BSEd in Mathematics,CED
-BTVTEd,Bachelor of Technical-Vocational Teacher Education,CED
-BTLEd,Bachelor of Technology and Livelihood Education,CED
+BA-ENG,Bachelor of Arts in English,CASS
+BA-FIL,Bachelor of Arts in Filipino,CASS
+BA-HIS,Bachelor of Arts in History,CASS
+BA-POLSCI,Bachelor of Arts in Political Science,CASS
+BSA,Bachelor of Science in Accountancy,CBAA
+BSBA-BE,BSBA (Business Economics),CBAA
+BSBA-Econ,BSBA (Economics),CBAA
+BSBA-EM,BSBA (Entrepreneurial Marketing),CBAA
+BSHRM,Bachelor of Science in Hotel and Restaurant Management,CBAA
+BSEd-Bio,Bachelor of Secondary Education (Biology),CED
+BSEd-Chem,Bachelor of Secondary Education (Chemistry),CED
+BSEd-Phys,Bachelor of Secondary Education (Physics),CED
+BSEd-Math,Bachelor of Secondary Education (Mathematics),CED
+BSEd-MAPEH,Bachelor of Secondary Education (MAPEH),CED
+BSEd-TLE,Bachelor of Secondary Education (TLE),CED
+BEEd-Eng,Bachelor of Elementary Education (English),CED
+BSTTE,Bachelor of Science in Technology Teacher Education,CED
 BSN,Bachelor of Science in Nursing,CHS
+MSCS,Master of Science in Computer Science,SGS
+MSIT,Master of Science in Information Technology,SGS
+MSEng,Master of Engineering,SGS
+Ph.D.-Math,Doctor of Philosophy in Mathematics,SGS
+BSDM,Bachelor in Demon Slaying,DSC

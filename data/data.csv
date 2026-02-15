@@ -2,7 +2,6 @@ id_no,first_name,last_name,program_code,year,gender
 2023-0001,Juan,Dela Cruz,BSCS,1,Male
 2023-0452,Maria,Santos,BSCE,1,Female
 2022-1105,Sittie,Aminah,BSIT,2,Female
-2021-0987,Mark,Villanueva,BSEE,3,Male
 2020-0012,Elena,Gomez,BSStat,4,Female
 2023-1522,Antonio,Luna,BSCS,1,Male
 2022-0331,Clara,Recto,BSIT,2,Female
@@ -130,10 +129,10 @@ id_no,first_name,last_name,program_code,year,gender
 2022-1307,Genos,Demon,BSCpE,2,Male
 2021-1308,Tatsumaki,Tornado,BSPhys,3,Female
 2021-1309,Fubuki,Blizzard,BSPsych,2,Female
-2025-1310,Tanjiro,Kamado,BSChE,1,Male
-2025-1311,Nezuko,Kamado,BSBio,1,Female
-2025-1312,Zenitsu,Agatsuma,BSEE,1,Male
-2025-1313,Inosuke,Hashibira,BSCerE,1,Male
+2025-1310,Tanjiro,Kamado,BSDM,1,Male
+2025-1311,Nezuko,Kamado,BSDM,1,Female
+2025-1312,Zenitsu,Agatsuma,BSDM,1,Male
+2025-1313,Inosuke,Hashibira,BSDM,1,Male
 2024-1314,Kyojuro,Rengoku,BSPhys,4,Male
 2024-1315,Shinobu,Kocho,BSChem,3,Female
 2023-1316,Izuku,Midoriya,BSPsych,1,Male
