@@ -28,11 +28,11 @@ BA-ENG,Bachelor of Arts in English,CASS
 BA-FIL,Bachelor of Arts in Filipino,CASS
 BA-HIS,Bachelor of Arts in History,CASS
 BA-POLSCI,Bachelor of Arts in Political Science,CASS
-BSA,Bachelor of Science in Accountancy,CBAA
-BSBA-BE,BSBA (Business Economics),CBAA
-BSBA-Econ,BSBA (Economics),CBAA
-BSBA-EM,BSBA (Entrepreneurial Marketing),CBAA
-BSHRM,Bachelor of Science in Hotel and Restaurant Management,CBAA
+BSA,Bachelor of Science in Accountancy,CEBA
+BSBA-BE,Bachelor of Science in Business Administration - Business Economics,CEBA
+BSBA-Econ,Bachelor of Science in Business Administration - Economics,CEBA
+BSBA-EM,Bachelor of Science in Business Administration - Entrepreneurial Marketing,CEBA
+BSHRM,Bachelor of Science in Hotel and Restaurant Management,CEBA
 BSEd-Bio,Bachelor of Secondary Education (Biology),CED
 BSEd-Chem,Bachelor of Secondary Education (Chemistry),CED
 BSEd-Phys,Bachelor of Secondary Education (Physics),CED
@@ -42,8 +42,4 @@ BSEd-TLE,Bachelor of Secondary Education (TLE),CED
 BEEd-Eng,Bachelor of Elementary Education (English),CED
 BSTTE,Bachelor of Science in Technology Teacher Education,CED
 BSN,Bachelor of Science in Nursing,CHS
-MSCS,Master of Science in Computer Science,SGS
-MSIT,Master of Science in Information Technology,SGS
-MSEng,Master of Engineering,SGS
-Ph.D.-Math,Doctor of Philosophy in Mathematics,SGS
 BSDM,Bachelor in Demon Slaying,DSC

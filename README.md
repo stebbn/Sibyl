@@ -28,17 +28,7 @@ Should have the ff:
 
  ## my todo list
  - polish ui / remove dat old feel idk
- - add verification to such code exists (stud data,college,program)
  - make a global settings table (?)
- - Student Display notebook to student section (maybe support images for profile)
-   - display following:
-     - id
-     - first and last name
-     - program name
-     - college name
-     - year
-     - gender
-
  - clean up codes type cast / comments wtv etc etc 
 
 ## install list

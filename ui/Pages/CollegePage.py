@@ -22,6 +22,8 @@ class CollegeFinderFrame(ttk.Frame):
 class CollegeTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", lambda *args: self.refresh())
 
         self.setup_ui()
         self.refresh()
@@ -31,29 +33,31 @@ class CollegeTab(ttk.Frame):
         header.pack(fill="x", padx=10, pady=5)
         
         ttk.Label(header, text="College Registry", font=("", 12, "bold")).pack(side="left")
-        ttk.Button(header, text=" + ", width=3, style="Accent.TButton", 
-                   command=lambda: self.open_editor()).pack(side="right")
+
+        search_ent = ttk.Entry(header, textvariable=self.search_var, width=25)
+        search_ent.pack(side="right", padx=10)
+
+        ttk.Label(header, text="Search:").pack(side="right")
+        ttk.Button(header, text=" + ", width=2, style="Accent.TButton", command=lambda: self.open_editor()).pack(side="left", padx=10)
 
         self.tree = ttk.Treeview(self, columns=("code", "name"), show="headings")
-
         self.tree.heading("code", text="College Code")
         self.tree.heading("name", text="Name")
-
         self.tree.column("code", width=120, anchor="center", stretch=tk.NO)
         self.tree.column("name", width=400, anchor="w", stretch=tk.YES)
-
         self.tree.pack(expand=True, fill="both", padx=10, pady=10)
 
         self.menu = tk.Menu(self, tearoff=0)
         self.menu.add_command(label="Edit College", command=self.edit_selected)
         self.menu.add_command(label="Delete College", command=self.delete_selected)
-
         self.tree.bind("<Button-3>", self.show_menu)
 
     def refresh(self):
+        query = self.search_var.get().lower()
         self.tree.delete(*self.tree.get_children())
         for code, name in data.college_data.items():
-            self.tree.insert("", "end", values=(code, name))
+            if query in code.lower() or query in name.lower():
+                self.tree.insert("", "end", values=(code, name))
 
     def show_menu(self, event):
         item = self.tree.identify_row(event.y)
@@ -75,6 +79,9 @@ class CollegeTab(ttk.Frame):
 class ProgramTab(ttk.Frame):
     def __init__(self, master):
         super().__init__(master)
+        self.search_var = tk.StringVar()
+        self.search_var.trace_add("write", lambda *args: self.refresh())
+
         self.setup_ui()
         self.refresh()
 
@@ -83,8 +90,12 @@ class ProgramTab(ttk.Frame):
         header.pack(fill="x", padx=10, pady=5)
         
         ttk.Label(header, text="Program Registry", font=("", 12, "bold")).pack(side="left")
-        ttk.Button(header, text=" + ", width=3, style="Accent.TButton", 
-                   command=lambda: self.open_editor()).pack(side="right")
+
+        search_ent = ttk.Entry(header, textvariable=self.search_var, width=25)
+        search_ent.pack(side="right", padx=10)
+
+        ttk.Label(header, text="Search:").pack(side="right")
+        ttk.Button(header, text=" + ", width=2, style="Accent.TButton", command=lambda: self.open_editor()).pack(side="left", padx=10)
 
         self.tree = ttk.Treeview(self, columns=("code", "name", "college"), show="headings")
 
@@ -101,12 +112,16 @@ class ProgramTab(ttk.Frame):
         self.menu = tk.Menu(self, tearoff=0)
         self.menu.add_command(label="Edit Program", command=self.edit_selected)
         self.menu.add_command(label="Delete Program", command=self.delete_selected)
+
         self.tree.bind("<Button-3>", self.show_menu)
 
     def refresh(self):
+        query = self.search_var.get().lower()
         self.tree.delete(*self.tree.get_children())
         for code, info in data.program_data.items():
-            self.tree.insert("", "end", values=(code, info['name'], info['college']))
+           
+            if any(query in str(v).lower() for v in [code, info['name'], info['college']]):
+                self.tree.insert("", "end", values=(code, info['name'], info['college']))
 
     def show_menu(self, event):
         item = self.tree.identify_row(event.y)
@@ -160,7 +175,7 @@ class EditorWindow(tk.Toplevel):
             self.ent_code.insert(0, self.info[0])
             self.ent_code.config(state="disabled")
 
-        ttk.Label(f, text="Description/Name:").pack(pady=5)
+        ttk.Label(f, text="Name:").pack(pady=5)
         self.ent_name = ttk.Entry(f)
         self.ent_name.pack(fill="x")
 

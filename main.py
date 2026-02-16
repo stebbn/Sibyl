@@ -13,7 +13,7 @@ from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 def prettyPrint(msg : str): 
     print("[Main]:", msg)
 
-width, height = 900, 500
+width, height = 900, 550
 
 class Sibyl_App(tk.Tk):
     def __init__(self):

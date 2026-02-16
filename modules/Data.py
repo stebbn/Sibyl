@@ -45,7 +45,6 @@ def VerifyFormat(data_type : str, user_input : str, name : str) -> list[bool, st
     val = user_input.strip()
     student_format = dataFormat["Student"]
 
-
     if not val:
         return [False, f"{name} is required."]
 
