@@ -15,7 +15,8 @@ import sv_ttk
 import pywinstyles
 
 from tkinter import ttk
-from ui import SidebarFrame, getBG, getTheme, setup_geometry, apply_theme
+from modules.Utils import getBG, getTheme, setup_geometry, apply_theme
+from ui import SidebarFrame
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
 def prettyPrint(msg : str): 

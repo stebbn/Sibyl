@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
-
 import modules.Data as data
+
+from tkinter import ttk
+from modules.Utils import processImage
 
 def prettyPrint(msg : str): 
     print("[SIDEBAR]:", msg)
@@ -15,16 +16,21 @@ class SidebarFrame(ttk.Frame):
         self.nav_buttons = {}
         self.current_button = None
 
-        logo_path = data.get_file_parent() / "ui" / "Assets" / "Logo.png"
-        self.IconImage = tk.PhotoImage(file=logo_path).subsample(10, 10)
+        asset_path = data.get_file_parent() / "ui" / "Assets"
+    
+        self.IconImage      = processImage(asset_path / "Logo.png", 120,120)
+
+        self.StudentImage   = processImage(asset_path / "student.png", 26,26, dark_mode_invert=True)
+        self.DatabaseImage  = processImage(asset_path / "database.png", 26,26, dark_mode_invert=True)
+        self.CollegeImage   = processImage(asset_path / "college.png", 26,26, dark_mode_invert=True)
 
         self.logo_lbl = ttk.Label(self, image=self.IconImage, 
             background=ttk.Style().lookup("Sidebar.TFrame", "background"),  )
         self.logo_lbl.pack(pady=30)
 
-        self.CreateButton("Students", "Students")
-        self.CreateButton("Colleges", "College")
-        self.CreateButton("Data Registry", "Data")
+        self.CreateButton("Students", "Students", self.StudentImage)
+        self.CreateButton("Colleges", "College", self.CollegeImage)
+        self.CreateButton("Data Registry", "Data", self.DatabaseImage)
 
         spacer = ttk.Label(self, text="", background=ttk.Style().lookup("Sidebar.TFrame", "background"))
         spacer.pack(expand=True)
@@ -50,12 +56,24 @@ class SidebarFrame(ttk.Frame):
             prettyPrint(f"invalid button update {new}")
             prettyPrint(self.nav_buttons)
 
-    def CreateButton(self, name : str, call_name : str):
-        btn = ttk.Button(
-            self, 
-            text=name,
-            command=lambda: self.handle_click(btn,call_name)
-        )
+    def CreateButton(self, name : str, call_name : str, image_path = None):
+       
+        btn = None
+
+        if image_path:
+            btn = ttk.Button(
+                self, 
+                text=f"   {name}",
+                image=image_path,
+                command=lambda: self.handle_click(btn,call_name)
+            )
+        else:
+            btn = ttk.Button(
+                self, 
+                text=name,
+                command=lambda: self.handle_click(btn,call_name)
+            )
+
         btn.pack(fill="x", padx=10, pady=20)
         self.nav_buttons[call_name] = btn
 

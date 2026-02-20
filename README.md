@@ -35,3 +35,4 @@ Should have the ff:
 - import sv_ttk
 - import darkdetect
 - import pywinstyles
+- import pillow

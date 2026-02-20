@@ -1,11 +1,36 @@
 import tkinter as tk
-from tkinter import ttk
-
-from ui import setup_geometry, apply_theme, getTheme
 import modules.Data as data
+
+from tkinter import ttk
+from modules.Utils import setup_geometry, apply_theme, getTheme, processImage
 
 def prettyPrint(msg : str): 
     print("[COLLEGE_PAGE]:", msg)
+
+def sort_column(self, col, reverse):
+    for c in self.tree["columns"]:
+        current_text = self.tree.heading(c)["text"].replace(" ▲", "").replace(" ▼", "")
+        self.tree.heading(c, text=current_text)
+    
+    id_text = self.tree.heading("code")["text"].replace(" ▲", "").replace(" ▼", "")
+    self.tree.heading("code", text=id_text)
+
+    data_list = [(self.tree.set(k, col), k) for k in self.tree.get_children("")]
+
+    try:
+        data_list.sort(key=lambda t: int(t[0].split('-')[0]) if '-' in t[0] else int(t[0]), reverse=reverse)
+    except ValueError:
+        data_list.sort(key=lambda t: t[0].lower(), reverse=reverse)
+
+    for index, (val, k) in enumerate(data_list):
+        self.tree.move(k, "", index)
+
+    arrow = " ▼" if reverse else " ▲"
+    new_text = self.tree.heading(col)["text"] + arrow
+    self.tree.heading(col, text=new_text, command=lambda: sort_column(self, col, not reverse)) # might be a problem
+
+    self.CurrentSort = col
+    self.ReverseSort = reverse
 
 class CollegeFinderFrame(ttk.Frame):
     def __init__(self, master, controller):
@@ -28,6 +53,9 @@ class CollegeTab(ttk.Frame):
         self.search_var = tk.StringVar()
         self.search_var.trace_add("write", lambda *args: self.refresh())
 
+        self.CurrentSort = "code"
+        self.ReverseSort = False
+
         self.setup_ui()
         self.refresh()
 
@@ -41,11 +69,17 @@ class CollegeTab(ttk.Frame):
         search_ent.pack(side="right", padx=10)
 
         ttk.Label(header, text="Search:").pack(side="right")
-        ttk.Button(header, text=" + ", width=2, style="Accent.TButton", command=lambda: self.open_editor()).pack(side="left", padx=10)
+
+        search_path = data.get_file_parent() / "ui" / "Assets" / "add.png"
+        self.add_image = processImage(search_path,15,15,dark_mode_invert=True)
+
+        ttk.Button(header, width=2, image=self.add_image, command=lambda: self.open_editor()).pack(side="left", padx=10)
 
         self.tree = ttk.Treeview(self, columns=("code", "name"), show="headings")
-        self.tree.heading("code", text="College Code")
-        self.tree.heading("name", text="Name")
+        
+        self.tree.heading("code", text="College Code", command=lambda: sort_column(self, "code", False))
+        self.tree.heading("name", text="Name", command=lambda: sort_column(self, "name", False))
+
         self.tree.column("code", width=120, anchor="center", stretch=tk.NO)
         self.tree.column("name", width=400, anchor="w", stretch=tk.YES)
         self.tree.pack(expand=True, fill="both", padx=10, pady=10)
@@ -64,6 +98,8 @@ class CollegeTab(ttk.Frame):
         for code, name in data.college_data.items():
             if query in code.lower() or query in name.lower():
                 self.tree.insert("", "end", values=(code, name))
+
+        sort_column(self, self.CurrentSort, self.ReverseSort)
 
     def show_menu(self, event):
         item = self.tree.identify_row(event.y)
@@ -88,6 +124,9 @@ class ProgramTab(ttk.Frame):
         self.search_var = tk.StringVar()
         self.search_var.trace_add("write", lambda *args: self.refresh())
 
+        self.CurrentSort = "code"
+        self.ReverseSort = False
+
         self.setup_ui()
         self.refresh()
 
@@ -101,13 +140,17 @@ class ProgramTab(ttk.Frame):
         search_ent.pack(side="right", padx=10)
 
         ttk.Label(header, text="Search:").pack(side="right")
-        ttk.Button(header, text=" + ", width=2, style="Accent.TButton", command=lambda: self.open_editor()).pack(side="left", padx=10)
+
+        search_path = data.get_file_parent() / "ui" / "Assets" / "add.png"
+        self.add_image = processImage(search_path,15,15,dark_mode_invert=True)
+
+        ttk.Button(header, width=2, image=self.add_image, command=lambda: self.open_editor()).pack(side="left", padx=10)
 
         self.tree = ttk.Treeview(self, columns=("code", "name", "college"), show="headings")
 
-        self.tree.heading("code", text="Program Code")
-        self.tree.heading("name", text="Name")
-        self.tree.heading("college", text="College")
+        self.tree.heading("code", text="Program Code", command=lambda: sort_column(self, "code", False))
+        self.tree.heading("name", text="Name", command=lambda: sort_column(self, "name", False))
+        self.tree.heading("college", text="College", command=lambda: sort_column(self, "college", False))
 
         self.tree.column("code", width=100, anchor="center", stretch=tk.NO)
         self.tree.column("name", width=450, anchor="w", stretch=tk.YES)
@@ -131,6 +174,8 @@ class ProgramTab(ttk.Frame):
            
             if any(query in str(v).lower() for v in [code, info['name'], info['college']]):
                 self.tree.insert("", "end", values=(code, info['name'], info['college']))
+
+        sort_column(self, self.CurrentSort, self.ReverseSort)
 
     def show_menu(self, event):
         item = self.tree.identify_row(event.y)

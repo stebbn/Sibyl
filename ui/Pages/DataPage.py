@@ -1,6 +1,8 @@
 import tkinter as tk
 import modules.Data as data
+
 from tkinter import ttk
+from modules.Utils import processImage
 
 def prettyPrint(msg : str): 
     print("[DATA_REG]:", msg)
@@ -27,18 +29,18 @@ class DataPageFrame(ttk.Frame):
         self.search_entry.pack(side="left", padx=5)
 
         self.search_field = ttk.Combobox(search_frame, state="readonly", width=15)
-        self.search_field['values'] = ("All Fields", "ID No.", "First Name", "Last Name", "Program", "Year", "Gender")
-        self.search_field.set("All Fields")
+        self.search_field['values'] = ("Match", "ID No.", "First Name", "Last Name", "Program", "Year", "Gender")
+        self.search_field.set("Match")
         self.search_field.pack(side="left", padx=5)
 
         search_path = data.get_file_parent() / "ui" / "Assets" / "search.png"
-        self.search_image = tk.PhotoImage(file=search_path).subsample(35,35)
+        self.search_image = processImage(search_path, 14,15)
 
         ttk.Button(
             search_frame, 
             command=self.update_list, 
             image=self.search_image
-        ).pack(side="left", padx=10)
+        ).pack(side="left", padx=5)
         
         tree_container = ttk.Frame(self)
         tree_container.pack(side="top", fill="both", expand=True)
@@ -145,7 +147,7 @@ class DataPageFrame(ttk.Frame):
                 "Gender": value.get('gender', '')
             }
 
-            if field_filter == "All Fields":
+            if field_filter == "Match":
                 target_text = f"{student_id} {' '.join(str(v) for v in value.values())}".lower()
             else:
                 target_text = str(field_map.get(field_filter, "")).lower()
