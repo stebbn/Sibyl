@@ -214,3 +214,4 @@ class DataPageFrame(ttk.Frame):
         if selected:
             student_id = self.tree.item(selected[0])["text"]
             if data.DeleteStudent(student_id): self.show_info()
+        else: prettyPrint("did not select anything")

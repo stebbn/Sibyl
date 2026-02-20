@@ -1,5 +1,4 @@
 import csv
-import json
 import re
 import time
 
@@ -8,6 +7,10 @@ from typing import Literal
 
 def prettyPrint(msg):
     print("[DATA]:", msg)
+
+def assert_ish(var, msg):
+    if not var:
+        prettyPrint(msg)
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -25,6 +28,7 @@ college_data  = {}
 program_data  = {}
 student_data  = {}
 
+paths = {"Student": data_path, "College": colleges_path, "Program": programs_path}
 #-----------------------------utils---------------------------------#
 
 def format_college_prog(code: str) -> bool | str:
@@ -86,23 +90,6 @@ def LoadCSV(file_path: Path, callback) -> dict:
         prettyPrint(f"Load Error [{file_path.name}]: {e}")
         return {"actual bum x3"}
 
-def SaveCSV(type_key: Literal["Student", "College", "Program"], data_dict: dict) -> bool:
-    paths = {"Student": data_path, "College": colleges_path, "Program": programs_path}
-    
-    try:
-        with open(paths[type_key], mode='w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=dataFormat[type_key])
-            writer.writeheader()
-            
-            for key, info in data_dict.items():
-                primary_key = dataFormat[type_key][0]
-                row = {primary_key: key, **info}
-                writer.writerow(row)
-        return True
-    except Exception as e:
-        prettyPrint(f"Save Error [{type_key}]: {e}")
-        return False
-
 # ------------------------- main data funcs --------------------------------- #
 
 def SyncAll():
@@ -114,18 +101,17 @@ def SyncAll():
         return {row['id_no']: {k: row[k] for k in dataFormat["Student"][1:]} for row in reader}
     student_data = LoadCSV(data_path, student_cb)
 
-    college_data = LoadCSV(colleges_path, lambda r: {row['college_code']: row['college_name'] for row in r})
+    college_data = LoadCSV(colleges_path, lambda r: {row[dataFormat["College"][0]]: row[dataFormat["College"][1]] for row in r})
 
     def program_cb(reader):
-        return {row['program_code']: {"name": row['program_name'], "college": row['college_code']} for row in reader}
+        return {row['program_code']: {"name": row[dataFormat["Program"][1]], "college": row[dataFormat["Program"][2]]} for row in reader}
     program_data = LoadCSV(programs_path, program_cb)
 
-    end = time.perf_counter()
-    prettyPrint(f"Total load took {end - start:.4f} seconds.")
+    prettyPrint(f"Total load took {time.perf_counter() - start:.4f} seconds.")
 
 def SaveData(type: Literal["Student", "College", "Program"], data_dict: dict) -> bool:
-    paths = {"Student": data_path, "College": colleges_path, "Program": programs_path}
-    
+    start = time.perf_counter()
+
     try:
         with open(paths[type], mode='w', newline='', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=dataFormat[type])
@@ -135,17 +121,22 @@ def SaveData(type: Literal["Student", "College", "Program"], data_dict: dict) ->
                 primary_key = dataFormat[type][0]
               
                 if type == "College":
-                    row = {primary_key: key, "college_name": info}
+                    row = {primary_key: key, dataFormat[type][1]: info}
                 elif type == "Program":
-                    row = {primary_key: key, "program_name": info["name"], "college_code": info["college"]}
-                else:
+                   row = {primary_key: key, dataFormat[type][1]: info.get("name"), dataFormat[type][2]: info.get("college")}
+                elif type == "Student":
                     row = {primary_key: key, **info}
+                else:
+                    prettyPrint("attempt save data but unknown type", type)
+                    break
                     
                 writer.writerow(row)
+        prettyPrint(f"Saved {type} | time elapsed {time.perf_counter() - start:.4f} seconds.")
+
         return True
     except Exception as e:
         prettyPrint(f"Unable to save [{type}]: {e}")
-        return False
+        return False    
     
 # Add datas ------------------------------------------------------------------------
 
@@ -154,11 +145,11 @@ def AddStudent(data_list) -> bool:
     sid = data_list[0]
    
     student_data[sid] = {
-        'first_name': data_list[1],
-        'last_name': data_list[2],
-        'program_code': data_list[3],
-        'year': data_list[4],
-        'gender': data_list[5]
+        dataFormat["Student"][1]: data_list[1],
+        dataFormat["Student"][2]: data_list[2],
+        dataFormat["Student"][3]: data_list[3],
+        dataFormat["Student"][4]: data_list[4],
+        dataFormat["Student"][5]: data_list[5]
     }
     
     prettyPrint(f"Adding Student: {sid}")
@@ -187,16 +178,16 @@ def AddProgram(data_list) -> bool:
 
 # Edit datas -----------------------------------------------------------------------
 
-def EditStudent(sid: str, new_data_list) -> bool:
+def EditStudent(sid: str, new_data_list : dict) -> bool:
     global student_data
     if sid not in student_data: return False
 
     student_data[sid] = {
-        'first_name': new_data_list[1],
-        'last_name': new_data_list[2],
-        'program_code': new_data_list[3],
-        'year': new_data_list[4],
-        'gender': new_data_list[5]
+        dataFormat["Student"][1]: new_data_list[1],
+        dataFormat["Student"][2]: new_data_list[2],
+        dataFormat["Student"][3]: new_data_list[3],
+        dataFormat["Student"][4]: new_data_list[4],
+        dataFormat["Student"][5]: new_data_list[5]
     }
     return SaveData("Student", student_data)
 
@@ -208,14 +199,14 @@ def EditCollege(code: str, new_name: str) -> bool:
     college_data[code] = new_name
     return SaveData("College", college_data)
 
-def EditProgram(p_code: str, new_data_list) -> bool:
+def EditProgram(p_code: str, new_data_list : list) -> bool:
     global program_data
-    p_code = p_code.upper()
+    p_code = format_college_prog(p_code)
     if p_code not in program_data: return False
 
     program_data[p_code] = {
-        "name": new_data_list[1],
-        "college": new_data_list[2].upper()
+        "name": new_data_list[0],
+        "college": new_data_list[1].upper()
     }
     return SaveData("Program", program_data)
 

@@ -4,6 +4,9 @@ from tkinter import ttk
 from ui import setup_geometry, apply_theme, getTheme
 import modules.Data as data
 
+def prettyPrint(msg : str): 
+    print("[COLLEGE_PAGE]:", msg)
+
 class CollegeFinderFrame(ttk.Frame):
     def __init__(self, master, controller):
         super().__init__(master)
@@ -55,6 +58,9 @@ class CollegeTab(ttk.Frame):
     def refresh(self):
         query = self.search_var.get().lower()
         self.tree.delete(*self.tree.get_children())
+
+        if not data.college_data: prettyPrint("college data not available"); return
+
         for code, name in data.college_data.items():
             if query in code.lower() or query in name.lower():
                 self.tree.insert("", "end", values=(code, name))
@@ -118,6 +124,9 @@ class ProgramTab(ttk.Frame):
     def refresh(self):
         query = self.search_var.get().lower()
         self.tree.delete(*self.tree.get_children())
+
+        if not data.program_data: prettyPrint("program data not available"); return
+
         for code, info in data.program_data.items():
            
             if any(query in str(v).lower() for v in [code, info['name'], info['college']]):
@@ -197,12 +206,14 @@ class EditorWindow(tk.Toplevel):
         code = self.ent_code.get().strip()
         name = self.ent_name.get().strip()
         
+        prettyPrint(f"attempt to {'Edit' if self.info else 'Add'}: {self.mode}")
+
         if self.mode == "College":
             if self.info: data.EditCollege(code, name)
             else: data.AddCollege([code, name])
         else:
             college = self.cb_college.get()
-            if self.info: data.EditProgram(code, [code, name, college])
+            if self.info: data.EditProgram(code, [name, college])
             else: data.AddProgram([code, name, college])
 
         self.parent.refresh()

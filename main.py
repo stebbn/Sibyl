@@ -1,3 +1,11 @@
+"""
+                      Sibyl 
+Manage student records, programs, and colleges with ease.
+Navigate using the sidebar to add, edit, or view data.
+
+Get started by selecting a section from the menu.
+"""
+
 import tkinter as tk
 import tkinter.font as tkFont
 
