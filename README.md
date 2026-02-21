@@ -1,4 +1,5 @@
 
+
 #  Sibyl
 
 > A Student Information System inspired by *Psycho-Pass*
@@ -20,6 +21,16 @@ It allows efficient management of students, colleges, and programs with right-cl
   * `darkdetect`
   * `pywinstyles`
 
+## 
+Dark Mode
+<img width="638" align="center" height="396" alt="Sibyl Dark Mode" src="https://github.com/user-attachments/assets/3b3888fd-0e66-44b0-beaf-b3b76af10d08" />
+
+<br clear="right"/>
+
+Light Mode
+<img width="638" align="center" height="396" alt="Sibyl Light Mode" src="https://github.com/user-attachments/assets/40cbc81f-2473-42d6-9ea3-f3d4e49417a5" />
+
+<br clear="right"/>
 
 ## Features
 
@@ -61,5 +72,5 @@ pip install pillow
 
 ### Inspiration
 
-Inspired by the system and aesthetic of *Psycho-Pass* —
+Inspired by the system and aesthetic of *Psycho-Pass*
 bringing structured order to student information management.
