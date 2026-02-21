@@ -15,7 +15,7 @@ import sv_ttk
 import pywinstyles
 
 from tkinter import ttk
-from modules.Utils import getBG, getTheme, setup_geometry, apply_theme
+from modules.ui_utils import getTheme, setup_geometry, apply_theme
 from ui import SidebarFrame
 from ui.Pages import CollegeFinderFrame, StudentPageFrame, DataPageFrame
 
@@ -41,18 +41,6 @@ class Sibyl_App(tk.Tk):
         self.Theme = getTheme()
 
         apply_theme(self)
-
-        style = ttk.Style()
-        style.configure("Sidebar.TFrame", 
-                        background=getBG(self.Theme), 
-                        borderwidth=0, 
-                        highlightthickness=3
-                        ) 
-        style.configure("Sidebar2.TFrame",background=getBG(self.Theme),) 
-        
-        style.configure('TCombobox', selectbackground=None, selectforeground=None)
-        style.configure("TNotebook", tabposition="n")
-        style.configure('TButton', font=('Bahnschrift SemiLight', 10))
 
         self.sidebar = SidebarFrame(self, on_nav_click=self.switch_page)
         self.sidebar.grid(row=0, column=0, sticky="nsew", padx=0)

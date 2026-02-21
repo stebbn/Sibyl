@@ -76,7 +76,7 @@ class InsertTab(ttk.Frame):
         
         GenderOptions = ["Male", "Female", "Non-Binary"]
 
-        entry = ttk.Combobox(self.form_container, values=GenderOptions, state="readonly", justify="center")
+        entry = ttk.Combobox(self.form_container, values=GenderOptions, state="readonly", justify="center", font=('Bahnschrift SemiLight', 10))
         self.entries[5] = entry
         entry.bind("<<ComboboxSelected>>", lambda e: self.focus())
         entry.grid(row=5, column=1, padx=10, pady=10, sticky="w")
@@ -177,10 +177,10 @@ class EditTab(ttk.Frame):
         
         gender_options = ["Male", "Female", "Non-Binary"]
 
-        combo = ttk.Combobox(self.form_container, values=gender_options, state="readonly", justify="center")
+        combo = ttk.Combobox(self.form_container, values=gender_options, state="readonly", justify="center", font=('Bahnschrift SemiLight', 10))
         combo.set(data_content[data_format[5]])
         combo.grid(row=5, column=1, padx=10, pady=10, sticky="w")
-        combo.bind("<<ComboboxSelected>>", lambda e: self.focus())
+        combo.bind("<<ComboboxSelected>>", lambda: self.focus())
 
         self.entries[5] = combo
 

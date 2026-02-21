@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.Utils import processImage
+from modules.ui_utils import processImage
 
 def prettyPrint(msg : str): 
     print("[DATA_REG]:", msg)
@@ -48,7 +48,8 @@ class DataPageFrame(ttk.Frame):
         columns = ("first_name", "last_name", "program_code", "year", "gender")
         self.tree = ttk.Treeview(tree_container, columns=columns, height=12)
         
-        self.tree.tag_configure("program_error", foreground="#FF6B6B")
+        self.tree.tag_configure("college_error", foreground="#FF6B6B")
+        self.tree.tag_configure("program_error", foreground="#FFDC6B")
 
         self.tree.heading("#0", text="ID No.", command=lambda: self.sort_column("#0", False))
         self.tree.column("#0", width=100)
@@ -161,8 +162,11 @@ class DataPageFrame(ttk.Frame):
                     value.get("gender", "")  
                 )
                 
-                if data.get_college_by_program(value.get("program_code", "")) == "invalid program code":
+                prog_stat = data.get_college_by_program(value.get("program_code", ""))
+                if prog_stat == "invalid program code":
                     self.tree.insert("", "end", text=student_id, values=display_values, tags=("program_error",))
+                elif prog_stat == "College Not Found":
+                    self.tree.insert("", "end", text=student_id, values=display_values, tags=("college_error",))
                 else:
                     self.tree.insert("", "end", text=student_id, values=display_values)
 

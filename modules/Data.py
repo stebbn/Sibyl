@@ -8,10 +8,6 @@ from typing import Literal
 def prettyPrint(msg):
     print("[DATA]:", msg)
 
-def assert_ish(var, msg):
-    if not var:
-        prettyPrint(msg)
-
 BASE_DIR = Path(__file__).resolve().parent
 
 colleges_path = BASE_DIR.parent / "data" / "colleges.csv"
@@ -99,8 +95,8 @@ def SyncAll():
 
     def student_cb(reader):
         return {row['id_no']: {k: row[k] for k in dataFormat["Student"][1:]} for row in reader}
+    
     student_data = LoadCSV(data_path, student_cb)
-
     college_data = LoadCSV(colleges_path, lambda r: {row[dataFormat["College"][0]]: row[dataFormat["College"][1]] for row in r})
 
     def program_cb(reader):
@@ -144,13 +140,10 @@ def AddStudent(data_list) -> bool:
     global student_data
     sid = data_list[0]
    
-    student_data[sid] = {
-        dataFormat["Student"][1]: data_list[1],
-        dataFormat["Student"][2]: data_list[2],
-        dataFormat["Student"][3]: data_list[3],
-        dataFormat["Student"][4]: data_list[4],
-        dataFormat["Student"][5]: data_list[5]
-    }
+    student_data[sid] = {}
+
+    for i,v in enumerate(dataFormat["Student"]):
+        student_data[sid][v] = data_list[i]
     
     prettyPrint(f"Adding Student: {sid}")
     return SaveData("Student", student_data)
@@ -182,13 +175,11 @@ def EditStudent(sid: str, new_data_list : dict) -> bool:
     global student_data
     if sid not in student_data: return False
 
-    student_data[sid] = {
-        dataFormat["Student"][1]: new_data_list[1],
-        dataFormat["Student"][2]: new_data_list[2],
-        dataFormat["Student"][3]: new_data_list[3],
-        dataFormat["Student"][4]: new_data_list[4],
-        dataFormat["Student"][5]: new_data_list[5]
-    }
+    student_data[sid] = {}
+
+    for i,v in enumerate(dataFormat["Student"]):
+        student_data[sid][v] = new_data_list[i]
+
     return SaveData("Student", student_data)
 
 def EditCollege(code: str, new_name: str) -> bool:

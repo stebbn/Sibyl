@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.Utils import processImage
+from modules.ui_utils import processImage
 
 def prettyPrint(msg : str): 
     print("[SIDEBAR]:", msg)
@@ -39,7 +39,6 @@ class SidebarFrame(ttk.Frame):
         self.info_lbl.pack(pady=10)
 
         self.UpdateSelected = self.SelectedUpdated
-        # event to call from main when new selected / force select
 
     def SelectedUpdated(self, new : str):
         oldButton : ttk.Button = self.current_button
@@ -58,22 +57,13 @@ class SidebarFrame(ttk.Frame):
 
     def CreateButton(self, name : str, call_name : str, image_path = None):
        
-        btn = None
-
-        if image_path:
-            btn = ttk.Button(
-                self, 
-                text=f"   {name}",
-                image=image_path,
-                command=lambda: self.handle_click(btn,call_name)
-            )
-        else:
-            btn = ttk.Button(
-                self, 
-                text=name,
-                command=lambda: self.handle_click(btn,call_name)
-            )
-
+        btn = ttk.Button(
+            self, 
+            text=f"   {name}",
+            image=image_path if image_path else None,
+            command=lambda: self.handle_click(btn,call_name)
+        )
+       
         btn.pack(fill="x", padx=10, pady=20)
         self.nav_buttons[call_name] = btn
 

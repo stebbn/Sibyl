@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.Utils import setup_geometry, apply_theme, getTheme, processImage
+from modules.ui_utils import setup_geometry, apply_theme, getTheme, processImage
 
 def prettyPrint(msg : str): 
     print("[COLLEGE_PAGE]:", msg)

@@ -3,6 +3,8 @@ import darkdetect
 import sv_ttk
 import pywinstyles
 
+from tkinter import ttk
+
 from PIL import Image, ImageTk, ImageOps
 
 def processImage(file_loc, w, h, dark_mode_invert = False) -> ImageTk.Image:
@@ -60,3 +62,15 @@ def apply_theme(self, theme=None):
         pywinstyles.apply_style(self, "dark" if self.is_dark else "normal")
         self.wm_attributes("-alpha", 0.99)
         self.wm_attributes("-alpha", 1)
+
+    style = ttk.Style()
+    style.configure("Sidebar.TFrame", 
+                    background=getBG(getTheme()), 
+                    borderwidth=0, 
+                    highlightthickness=3
+                    ) 
+    style.configure("Sidebar2.TFrame",background=getBG(getTheme()),) 
+    
+    style.configure('TCombobox', selectbackground=None, selectforeground=None)
+    style.configure("TNotebook", tabposition="n")
+    style.configure('TButton', font=('Bahnschrift SemiLight', 10))

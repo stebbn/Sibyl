@@ -15,7 +15,7 @@ id_no,first_name,last_name,program_code,year,gender
 2024-0022,Marcelo,del Pilar,BSEE,1,Male
 2022-0334,Teresa,Magbanua,BSEd-Math,2,Female
 2021-0099,Juan,Luna,BSA,3,Male
-2020-0143,Jose,Rizal,BSCS,4,Male
+2020-0143,Jose,Rizal,BSCS,3,Male
 2024-0911,Ramon,Magsaysay,BSME,1,Male
 2024-1070,Steve Nash,Llamedo,BSCS,2,Male
 2024-0090,Aizen,Sosuke,BSEE,4,Male
@@ -56,15 +56,12 @@ id_no,first_name,last_name,program_code,year,gender
 2022-1183,Charlotte,Reporter,BA-FIL,3,Female
 2023-1184,Chevreuse,Captain,BSCpE,2,Female
 2021-1185,Navia,Spina,BSChE,4,Female
-2024-1186,Gaming,Dancer,BSTTE,1,Male
 2022-1187,Xianyun,Cloud,BSPhys,4,Female
-2023-1188,Chiori,Designer,BSTTE,2,Female
 2021-1189,Sigewinne,Nurse,BSN,3,Female
 2024-1190,Clorinde,Duelist,BSECE,1,Female
 2022-1191,Sethos,Desert,BSStat,2,Male
 2023-1192,Emilie,Perfumer,BSChem,1,Female
 2021-1193,Cloud,Strife,BSME,4,Male
-2024-1194,Tifa,Lockhart,BSTTE,1,Female
 2022-1195,Aerith,Gainsborough,BSBio-Gen,3,Female
 2023-1196,Barret,Wallace,BSMetE,2,Male
 2021-1197,Sephiroth,One,BSPhys,4,Male
@@ -87,7 +84,6 @@ id_no,first_name,last_name,program_code,year,gender
 2024-1216,Leopold,Strauss,BSPhys,4,Male
 2024-1217,Sean,MacGuire,BSECE,1,Male
 2023-1218,Molly,O'Shea,BSN,2,Female
-2023-1219,Susan,Grimshaw,BSTTE,4,Female
 2023-1220,Uncle,One,BSCS,4,Male
 2022-1221,Joel,Miller,BSCE,4,Male
 2022-1222,Ellie,Williams,BSBio-Gen,1,Female
@@ -123,14 +119,10 @@ id_no,first_name,last_name,program_code,year,gender
 2024-1303,Armin,Arlert,BSStat,4,Male
 2023-1304,Levi,Ackerman,BSME,4,Male
 2023-1305,Hange,Zoe,BSBio-Gen,4,Non-Binary
-2022-1306,Saitama,OnePunch,BSTTE,1,Male
 2022-1307,Genos,Demon,BSCpE,2,Male
 2021-1308,Tatsumaki,Tornado,BSPhys,3,Female
 2021-1309,Fubuki,Blizzard,BSPsych,2,Female
 2025-1310,Tanjiro,Kamado,BSDM,1,Male
-2025-1311,Nezuko,Kamado,BSDM,1,Female
-2025-1312,Zenitsu,Agatsuma,BSDM,1,Male
-2025-1313,Inosuke,Hashibira,BSDM,1,Male
 2024-1314,Kyojuro,Rengoku,BSPhys,4,Male
 2024-1315,Shinobu,Kocho,BSChem,3,Female
 2023-1316,Izuku,Midoriya,BSPsych,1,Male
@@ -147,7 +139,6 @@ id_no,first_name,last_name,program_code,year,gender
 2023-1327,Roy,Mustang,BSChE,4,Male
 2022-1328,Riza,Hawkeye,BSN,4,Female
 2022-1329,Monkey,Luffy,BA-FIL,1,Male
-2021-1330,Roronoa,Zoro,BSTTE,2,Male
 2021-1331,Nami,Navigator,BSMath,3,Female
 2024-1332,Vinsmoke,Sanji,BSN,3,Male
 2024-1333,Nico,Robin,BA-HIS,4,Female
@@ -155,7 +146,6 @@ id_no,first_name,last_name,program_code,year,gender
 2023-1335,Franky,Cyborg,BSCpE,4,Male
 2022-1336,Brook,Skeleton,BSA,4,Male
 2022-1337,Jinbe,Knight,BSCE,4,Male
-2021-1338,Goku,Son,BSTTE,4,Male
 2021-1339,Vegeta,Prince,BSPhys,4,Male
 2024-1340,Bulma,Briefs,BSCpE,4,Female
 2024-1341,Light,Yagami,BSIS,2,Male
@@ -166,5 +156,4 @@ id_no,first_name,last_name,program_code,year,gender
 2021-1346,Sasuke,Uchiha,BSECE,1,Male
 2021-1347,Sakura,Haruno,BSBio-Gen,1,Female
 2024-1348,Kakashi,Hatake,BSN,4,Male
-2024-1349,Hinata,Hyuga,BSTTE,1,Female
 2023-1350,Itachi,Uchiha,BSPsych,4,Male

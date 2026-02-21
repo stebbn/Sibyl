@@ -2,8 +2,6 @@ program_code,program_name,college_code
 BSCS,Bachelor of Science in Computer Science,CCS
 BSIT,Bachelor of Science in Information Technology,CCS
 BSIS,Bachelor of Science in Information Systems,CCS
-BSECT-ES,BS in Electronics and Computer Technology (Embedded Systems),CCS
-BSECT-CS,BS in Electronics and Computer Technology (Communications System),CCS
 BSCE,Bachelor of Science in Civil Engineering,COE
 BSCerE,Bachelor of Science in Ceramics Engineering,COE
 BSChE,Bachelor of Science in Chemical Engineering,COE
@@ -40,6 +38,6 @@ BSEd-Math,Bachelor of Secondary Education (Mathematics),CED
 BSEd-MAPEH,Bachelor of Secondary Education (MAPEH),CED
 BSEd-TLE,Bachelor of Secondary Education (TLE),CED
 BEEd-Eng,Bachelor of Elementary Education (English),CED
-BSTTE,Bachelor of Science in Technology Teacher Education,CED
 BSN,Bachelor of Science in Nursing,CHS
 BSDM,Bachelor in Demon Slaying,DSC
+BSCA,Bachelor of Science in Computer Applications,CCS
