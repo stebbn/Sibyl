@@ -60,6 +60,7 @@ Light Mode
 
 
 ##  Installation
+The app is already pre-built with the executable file given.
 
 Install the required dependencies:
 
@@ -68,6 +69,15 @@ pip install sv-ttk
 pip install darkdetect
 pip install pywinstyles
 pip install pillow
+```
+
+Pyinstaller Installation:
+```bash
+pyinstaller -w -F `
+--add-data "ui/Assets;ui/Assets" `
+--add-data "data;data" `
+-i "ui/Assets/APP_ICON.ico" `
+-n "SYBL" main.py `
 ```
 
 ### Inspiration
