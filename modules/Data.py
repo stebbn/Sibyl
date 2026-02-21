@@ -1,18 +1,30 @@
 import csv
 import re
+import os
+import sys
 import time
 
-from pathlib import Path
+from modules.ui_utils import resource_path
 from typing import Literal
 
 def prettyPrint(msg):
     print("[DATA]:", msg)
 
-BASE_DIR = Path(__file__).resolve().parent
+def get_save_path(filename):
+    if getattr(sys, 'frozen', False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.abspath(".")
+  
+    data_dir = os.path.join(base_path, "data")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        
+    return os.path.join(data_dir, filename)
 
-colleges_path = BASE_DIR.parent / "data" / "colleges.csv"
-programs_path = BASE_DIR.parent / "data" / "programs.csv"
-data_path     = BASE_DIR.parent / "data" / "data.csv"
+colleges_path = get_save_path("colleges.csv")
+programs_path = get_save_path("programs.csv")
+data_path     = get_save_path("data.csv")
 
 dataFormat = {
     "Student" : ["id_no", "first_name", "last_name", "program_code", "year", "gender"],
@@ -74,16 +86,16 @@ def VerifyFormat(data_type : str, user_input : str, name : str) -> list[bool, st
 
     return [True, val]
 
-def LoadCSV(file_path: Path, callback) -> dict:
+def LoadCSV(file_path, callback) -> dict:
     try:
-        if not file_path.exists():
-            prettyPrint(f"Warning: {file_path.name} not found.")
+        if not os.path.exists(file_path):
+            prettyPrint(f"Warning: {os.path.basename(file_path)} not found.")
             return {}
         with open(file_path, mode='r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             return callback(reader)
     except Exception as e:
-        prettyPrint(f"Load Error [{file_path.name}]: {e}")
+        prettyPrint(f"Load Error [{os.path.basename(file_path)}]: {e}")
         return {"actual bum x3"}
 
 # ------------------------- main data funcs --------------------------------- #
@@ -235,6 +247,5 @@ def FindStudentData(student_id : str) -> bool | dict:
     return False
 
 def GetFormat(type : Literal["Student", "College", "Program"]) -> dict : return dataFormat[type]
-def get_file_parent(): return BASE_DIR.parent
 
 SyncAll()

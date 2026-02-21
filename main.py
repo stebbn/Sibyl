@@ -96,3 +96,15 @@ class Sibyl_App(tk.Tk):
 if __name__ == "__main__":
     app = Sibyl_App()
     app.mainloop()
+
+
+# installation with pyinstaller:
+
+"""
+pyinstaller -w -F `
+--add-data "ui/Assets;ui/Assets" `
+--add-data "data;data" `
+-i "ui/Assets/APP_ICON.ico" `
+-n "SYBL" main.py `
+
+"""

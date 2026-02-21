@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.ui_utils import setup_geometry, apply_theme, getTheme, processImage
+from modules.ui_utils import setup_geometry, apply_theme, getTheme, processImage, resource_path
 
 def prettyPrint(msg : str): 
     print("[COLLEGE_PAGE]:", msg)
@@ -70,8 +70,7 @@ class CollegeTab(ttk.Frame):
 
         ttk.Label(header, text="Search:").pack(side="right")
 
-        search_path = data.get_file_parent() / "ui" / "Assets" / "add.png"
-        self.add_image = processImage(search_path,15,15,dark_mode_invert=True)
+        self.add_image = processImage(resource_path("ui/Assets/add.png"),15,15,dark_mode_invert=True)
 
         ttk.Button(header, width=2, image=self.add_image, command=lambda: self.open_editor()).pack(side="left", padx=10)
 
@@ -141,8 +140,7 @@ class ProgramTab(ttk.Frame):
 
         ttk.Label(header, text="Search:").pack(side="right")
 
-        search_path = data.get_file_parent() / "ui" / "Assets" / "add.png"
-        self.add_image = processImage(search_path,15,15,dark_mode_invert=True)
+        self.add_image = processImage(resource_path("ui/Assets/add.png"),15,15,dark_mode_invert=True)
 
         ttk.Button(header, width=2, image=self.add_image, command=lambda: self.open_editor()).pack(side="left", padx=10)
 

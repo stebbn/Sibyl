@@ -1,4 +1,5 @@
 import sys
+import os
 import darkdetect
 import sv_ttk
 import pywinstyles
@@ -6,6 +7,14 @@ import pywinstyles
 from tkinter import ttk
 
 from PIL import Image, ImageTk, ImageOps
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 def processImage(file_loc, w, h, dark_mode_invert = False) -> ImageTk.Image:
     og_img = Image.open(file_loc)

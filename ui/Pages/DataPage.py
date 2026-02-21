@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.ui_utils import processImage
+from modules.ui_utils import processImage, resource_path
 
 def prettyPrint(msg : str): 
     print("[DATA_REG]:", msg)
@@ -33,8 +33,7 @@ class DataPageFrame(ttk.Frame):
         self.search_field.set("Match")
         self.search_field.pack(side="left", padx=5)
 
-        search_path = data.get_file_parent() / "ui" / "Assets" / "search.png"
-        self.search_image = processImage(search_path, 14,15)
+        self.search_image = processImage(resource_path("ui/Assets/search.png"), 14,15)
 
         ttk.Button(
             search_frame, 

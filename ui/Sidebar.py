@@ -2,7 +2,7 @@ import tkinter as tk
 import modules.Data as data
 
 from tkinter import ttk
-from modules.ui_utils import processImage
+from modules.ui_utils import processImage, resource_path
 
 def prettyPrint(msg : str): 
     print("[SIDEBAR]:", msg)
@@ -16,13 +16,11 @@ class SidebarFrame(ttk.Frame):
         self.nav_buttons = {}
         self.current_button = None
 
-        asset_path = data.get_file_parent() / "ui" / "Assets"
-    
-        self.IconImage      = processImage(asset_path / "Logo.png", 120,120)
+        self.IconImage      = processImage(resource_path("ui/Assets/Logo.png"), 120,120)
 
-        self.StudentImage   = processImage(asset_path / "student.png", 26,26, dark_mode_invert=True)
-        self.DatabaseImage  = processImage(asset_path / "database.png", 26,26, dark_mode_invert=True)
-        self.CollegeImage   = processImage(asset_path / "college.png", 26,26, dark_mode_invert=True)
+        self.StudentImage   = processImage(resource_path("ui/Assets/student.png"), 26,26, dark_mode_invert=True)
+        self.DatabaseImage  = processImage(resource_path("ui/Assets/database.png"), 26,26, dark_mode_invert=True)
+        self.CollegeImage   = processImage(resource_path("ui/Assets/college.png"), 26,26, dark_mode_invert=True)
 
         self.logo_lbl = ttk.Label(self, image=self.IconImage, 
             background=ttk.Style().lookup("Sidebar.TFrame", "background"),  )

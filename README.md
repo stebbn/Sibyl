@@ -1,5 +1,4 @@
 
-
 #  Sibyl
 
 > A Student Information System inspired by *Psycho-Pass*
