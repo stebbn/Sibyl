@@ -1,7 +1,7 @@
 import tkinter as tk
 import modules.Data as data
 
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from modules.ui_utils import setup_geometry, apply_theme, getTheme, processImage, resource_path
 
 def prettyPrint(msg : str): 
@@ -111,8 +111,26 @@ class CollegeTab(ttk.Frame):
         self.open_editor(values)
 
     def delete_selected(self):
-        code = self.tree.item(self.tree.selection()[0])['values'][0]
-        if data.DeleteCollege(code): self.refresh()
+        selected_items = self.tree.selection()
+        if not selected_items: return
+        
+        code = self.tree.item(selected_items[0])['values'][0]
+        prog_count = data.GetProgramCountByCollege(code)
+        
+        if prog_count > 0:
+            msg = f"WARNING: There are {prog_count} program(s) linked to '{code}'.\n\nDeleting this college will set those programs to 'UNASSIGNED'.\n\nAre you sure you want to proceed?"
+        else:
+            msg = f"Are you sure you want to delete the '{code}' college?"
+  
+        confirm = messagebox.askyesno("Confirm Deletion", msg)
+        
+        if confirm:
+            if data.DeleteCollege(code): 
+                self.refresh()
+                self.master.master.tab_programs.refresh() 
+                prettyPrint(f"Successfully deleted college: {code}")
+            else:
+                messagebox.showerror("Error", f"Failed to delete college: {code}")
 
     def open_editor(self, info=None):
         EditorWindow(self, "College", info)
@@ -186,8 +204,24 @@ class ProgramTab(ttk.Frame):
         self.open_editor(values)
 
     def delete_selected(self):
-        code = self.tree.item(self.tree.selection()[0])['values'][0]
-        if data.DeleteProgram(code): self.refresh()
+        selected_items = self.tree.selection()
+        if not selected_items: return
+    
+        code = self.tree.item(selected_items[0])['values'][0]
+        student_count = data.GetStudentCountByProgram(code)
+        
+        if student_count > 0:
+            msg = f"There are {student_count} student(s) currently enrolled in '{code}'.\n\nAre you sure you want to delete this program?"
+        else:
+            msg = f"Are you sure you want to delete the '{code}' program?"
+      
+        confirm = messagebox.askyesno("Confirm Deletion", msg)
+        if confirm:
+            if data.DeleteProgram(code): 
+                self.refresh()
+                prettyPrint(f"Successfully deleted program: {code}")
+            else:
+                messagebox.showerror("Error", f"Failed to delete program: {code}")
 
     def open_editor(self, info=None):
         EditorWindow(self, "Program", info)
@@ -234,14 +268,18 @@ class EditorWindow(tk.Toplevel):
         if self.info: self.ent_name.insert(0, self.info[1])
 
         if self.mode == "Program":
-            
             self.height += 60
             self.setup_geometry()
 
             ttk.Label(f, text="College:").pack(pady=5)
-            self.cb_college = ttk.Combobox(f, values=list(data.college_data.keys()), state="readonly")
+            
+            college_list = list(data.college_data.keys())
+           
+            self.cb_college = ttk.Combobox(f, values=college_list, state="readonly")
             self.cb_college.pack(fill="x")
+            
             if self.info: self.cb_college.set(self.info[2])
+            else: self.cb_college.current(0)
 
         ttk.Button(f, text="Save Data", style="Accent.TButton", command=self.save).pack(pady=20)
 
@@ -253,11 +291,15 @@ class EditorWindow(tk.Toplevel):
 
         if self.mode == "College":
             if self.info: data.EditCollege(code, name)
-            else: data.AddCollege([code, name])
+            else:
+                suc, res = data.AddCollege([code, name])
+                if not suc: messagebox.showerror("Add Error", res)
         else:
             college = self.cb_college.get()
             if self.info: data.EditProgram(code, [name, college])
-            else: data.AddProgram([code, name, college])
+            else: 
+                suc, res = data.AddProgram([code, name, college])
+                if not suc: messagebox.showerror("Add Error", res)
 
         self.parent.refresh()
         self.destroy()

@@ -82,7 +82,7 @@ def VerifyFormat(data_type : str, user_input : str, name : str) -> list[bool, st
     elif data_type == student_format[4]:
         if val.isdigit() and 1 <= int(val) <= 5:
             return [True, val]
-        return [False, "Range: 1-5"]
+        return [False, "Year Range: 1-5"]
 
     return [True, val]
 
@@ -163,23 +163,33 @@ def AddStudent(data_list) -> bool:
 def AddCollege(data_list) -> bool:
     global college_data
     code = data_list[0].upper()
+
+    if college_data.get(code):
+        message = f"college code already exists: {code}"
+        prettyPrint(message)
+        return False, message
    
     college_data[code] = data_list[1]
     
     prettyPrint(f"Adding College: {code}")
-    return SaveData("College", college_data)
+    return SaveData("College", college_data), "success"
 
 def AddProgram(data_list) -> bool:
     global program_data
     p_code = data_list[0].upper()
     
+    if program_data.get(p_code):
+        message = f"Program code already exists: {p_code}"
+        prettyPrint(message)
+        return False, message
+
     program_data[p_code] = {
         "name": data_list[1],
         "college": data_list[2].upper()
     }
     
     prettyPrint(f"Adding Program: {p_code}")
-    return SaveData("Program", program_data)
+    return SaveData("Program", program_data), "success"
 
 # Edit datas -----------------------------------------------------------------------
 
@@ -223,22 +233,66 @@ def DeleteStudent(sid: str) -> bool:
     return False
 
 def DeleteCollege(code: str) -> bool:
-    global college_data
+    global college_data, program_data
     code = code.upper()
+    
     if code in college_data:
+        programs_updated = False
+        for p_code, info in program_data.items():
+            if info.get("college", "").upper() == code:
+                program_data[p_code]["college"] = "UNASSIGNED"
+                programs_updated = True
+        
         del college_data[code]
+        if programs_updated:
+            SaveData("Program", program_data)
+            
         return SaveData("College", college_data)
+        
     return False
 
 def DeleteProgram(p_code: str) -> bool:
-    global program_data
+    global program_data, student_data
     p_code = p_code.upper()
+    
     if p_code in program_data:
+        students_updated = False
+        for sid, info in student_data.items():
+            if info.get("program_code", "").upper() == p_code:
+                student_data[sid]["program_code"] = "UNASSIGNED"
+                students_updated = True
         del program_data[p_code]
+     
+        if students_updated:
+            SaveData("Student", student_data)
+        
         return SaveData("Program", program_data)
+        
     return False
 
 # ------------------------- retrieve stuff ----------------------------------------- #
+
+def GetProgramCountByCollege(college_code: str) -> int:
+    count = 0
+    college_code = str(college_code)
+    code_upper = college_code.strip().upper()
+    
+    for p_code, info in program_data.items():
+        if info.get("college", "").upper() == code_upper:
+            count += 1
+            
+    return count
+
+def GetStudentCountByProgram(p_code: str) -> int:
+    count = 0
+    p_code = str(p_code)
+    p_code_upper = p_code.strip().upper()
+ 
+    for student_id, info in student_data.items():
+        if info.get("program_code", "").upper() == p_code_upper:
+            count += 1
+            
+    return count
 
 def FindStudentData(student_id : str) -> bool | dict:
     all_students = student_data
