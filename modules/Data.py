@@ -233,22 +233,66 @@ def DeleteStudent(sid: str) -> bool:
     return False
 
 def DeleteCollege(code: str) -> bool:
-    global college_data
+    global college_data, program_data
     code = code.upper()
+    
     if code in college_data:
+        programs_updated = False
+        for p_code, info in program_data.items():
+            if info.get("college", "").upper() == code:
+                program_data[p_code]["college"] = "UNASSIGNED"
+                programs_updated = True
+        
         del college_data[code]
+        if programs_updated:
+            SaveData("Program", program_data)
+            
         return SaveData("College", college_data)
+        
     return False
 
 def DeleteProgram(p_code: str) -> bool:
-    global program_data
+    global program_data, student_data
     p_code = p_code.upper()
+    
     if p_code in program_data:
+        students_updated = False
+        for sid, info in student_data.items():
+            if info.get("program_code", "").upper() == p_code:
+                student_data[sid]["program_code"] = "UNASSIGNED"
+                students_updated = True
         del program_data[p_code]
+     
+        if students_updated:
+            SaveData("Student", student_data)
+        
         return SaveData("Program", program_data)
+        
     return False
 
 # ------------------------- retrieve stuff ----------------------------------------- #
+
+def GetProgramCountByCollege(college_code: str) -> int:
+    count = 0
+    college_code = str(college_code)
+    code_upper = college_code.strip().upper()
+    
+    for p_code, info in program_data.items():
+        if info.get("college", "").upper() == code_upper:
+            count += 1
+            
+    return count
+
+def GetStudentCountByProgram(p_code: str) -> int:
+    count = 0
+    p_code = str(p_code)
+    p_code_upper = p_code.strip().upper()
+ 
+    for student_id, info in student_data.items():
+        if info.get("program_code", "").upper() == p_code_upper:
+            count += 1
+            
+    return count
 
 def FindStudentData(student_id : str) -> bool | dict:
     all_students = student_data
